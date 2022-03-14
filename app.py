@@ -8,14 +8,11 @@ from forms import RegisterForm, LoginForm, FeedbackForm
 import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///no_fun_league"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    'DATABASE_URL', "postgresql:///no_fun_league")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'testsecret99')
-print('****************************')
-print('****************************')
-print('****************************')
-print(app.config["SECRET_KEY"])
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 
