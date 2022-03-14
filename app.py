@@ -5,10 +5,13 @@ from models import db, connect_db, User, Feedback
 from forms import RegisterForm, LoginForm, FeedbackForm
 from sqlalchemy.exc import IntegrityError
 import os
+import re
 
 app = Flask(__name__)
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'DATABASE_URL', "postgres:///no_fun_league")
+    'DATABASE_URL').replace("://", "ql://", 1)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get(
