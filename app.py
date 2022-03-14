@@ -1,18 +1,18 @@
 
 from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from sqlalchemy.exc import IntegrityError
-
 from models import db, connect_db, User, Feedback
 from forms import RegisterForm, LoginForm, FeedbackForm
+from sqlalchemy.exc import IntegrityError
 import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'DATABASE_URL', "postgresql:///no_fun_league")
+    'DATABASE_URL', "postgres:///no_fun_league")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'testsecret99')
+app.config["SECRET_KEY"] = os.environ.get(
+    'SECRET_KEY', 'miataisalwaystheanswer')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 
