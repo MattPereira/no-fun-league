@@ -4,48 +4,67 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-md-9">
-        <div class="row text-center">
-            <div class="col-2">
-                <img class="img-fluid" src="https://sleepercdn.com/avatars/{{user_data['avatar']}}">
-            </div>
-            <div class="col-auto">
-                <p><b><u>USERNAME</u></b></p>
-                <p> {{user.username}}</p>
-            </div>
-            <div class="col-auto">
-                <p><b><u>EMAIL</u></b></p>
-                <p>{{user.email}}</p>
-            </div>
-            <div class="col-auto">
-                <p><b><u>FULL NAME</u></b></p>
-                <p>{{user.first_name}} {{user.last_name}}</p>
-            </div>
-            <div class="col-auto">
-                <p><b><u>USER_ID</u></b></p>
-                <p>{{user_data['user_id']}}</p>
-            </div>
-        </div>
+
+<div class="row text-center">
+    <div class="col-2">
+        <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/{{user_data['avatar']}}">
+        <p class="lead">{{user.username}}</p>
     </div>
-    <div class="col-md-3">
-        <div class="d-flex justify-content-end">
-            <form action="/users/{{user.username}}/update">
-                <button type="submit" class="btn btn-warning">Edit User Details</button>
-            </form>
-        </div>
+    <div class="col-auto">
+        <p><b><u>IRL NAME</u></b></p>
+        <p>{{user.first_name}} {{user.last_name}}</p>
+    </div>
+    <div class="col-auto">
+        <p><b><u>Wins</u></b></p>
+        <p>{{roster['settings']['wins']}}</p>
+    </div>
+    <div class="col-auto">
+        <p><b><u>Losses</u></b></p>
+        <p>{{roster['settings']['losses']}}</p>
+    </div>
+    <div class="col-auto">
+        <p><b><u>Total Points For</u></b></p>
+        <p>{{roster['settings']['fpts']}}</p>
+    </div>
+    <div class="col-auto">
+        <p><b><u>Total Points Against</u></b></p>
+        <p>{{roster['settings']['fpts_against']}}</p>
+    </div>
+    <div class="col-auto">
+        <p><b><u>Record</u></b></p>
+        <p>{{roster['metadata']['record']}}</p>
     </div>
 </div>
 
 
+<div class="row justify-content-end">
+    <div class="col-auto">
+        <form action="/users/{{user.username}}/update">
+            <button type="submit" class="btn btn-warning">Edit User Details</button>
+        </form>
+    </div>
+</div>
+
+
+<p><b><u>USER_ID</u></b></p>
+<p>{{user_data['user_id']}}</p>
+
 <h3 class="display-3 text-center">ROSTER</h3>
 
-<p>{{roster}}</p>
+<h5>Starters</h5>
 
-{{league_data[2]['owner_id']}}
+{% for player in roster['starters']%}
+    <li>{{player}}</li>
+{% endfor %}
 
-{% for owner in league_data%}
-<li>{{owner['owner_id']}}</li>
-{% endfor%}
+<h5>Bench</h5>
+
+{% for player in roster['players'] %}
+    {% if player not in roster['starters']%}
+        <li>{{player}}</li>
+    {% endif %}
+{% endfor %}
+
+
 
 {% endblock %}

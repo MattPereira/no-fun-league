@@ -14,9 +14,24 @@
         <div class="container">
           <a href="/" class="navbar-brand text-light">NO FUN LEAGUE</a>
           <ul class="nav navbar-nav flex-row float-right">
+            <li class="nav-item">
+              <a href="/" class="nav-link text-light pe-4">All Rosters</a>
+            </li>
+            <li class="nav-item">
+              <a href="/" class="nav-link text-light pe-4">Transactions</a>
+            </li>
+            <li class="nav-item">
+              <a href="/" class="nav-link text-light pe-4">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="/" class="nav-link text-light pe-4">Draftboard</a>
+            </li>
+            <li class="nav-item">
+              <a href="/" class="nav-link text-light pe-4">Voting</a>
+            </li>
             {% if session['username'] %}
             <li class="nav-item">
-              <a href="/users/{{session.username}}" class="nav-link text-light pe-4">User Home</a>
+              <a href="/users/{{session.username}}" class="nav-link text-light pe-4">My Roster</a>
             </li>
             <li class="nav-item">
               <form action="/logout" method="POST">

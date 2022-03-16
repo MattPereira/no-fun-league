@@ -105,9 +105,6 @@ def logout_user():
 def show_user(username):
     """Show information about a user AND show all user submitted feedback"""
 
-    if 'username' not in session or username != session['username']:
-        return render_template('401.html')
-
     user = User.query.get_or_404(username)
 
     user_res = requests.get(f"https://api.sleeper.app/v1/user/{user.username}")
@@ -120,18 +117,7 @@ def show_user(username):
 
     league_data = league_res.json()
 
-    # roster = get_roster(league_data, user_id)
-
-    print('***************')
-    print(league_data[6]['owner_id'])
-    print(user_id)
-    print(league_data[6]['owner_id'] == user_id)
-    print('************')
-    for owner in league_data:
-        if owner['owner_id'] == user_id:
-            roster = owner
-        else:
-            roster = 'wtf'
+    roster = get_roster(league_data, user_id)
 
     return render_template('users/show.html', user=user, user_data=user_data, league_data=league_data, roster=roster)
 
