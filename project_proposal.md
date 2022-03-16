@@ -7,7 +7,7 @@
    * Contains data about each member of league, each league members roster, and each roster's players
 4. **In brief, outline your approach to creating your project (knowing that you may not know everything in advance and that these details might change later). Answer questions like the ones below, but feel free to add more information:**
     * *What does your database schema look like?*
-      *  coming soon
+      * ![schema](db_schema.png)
     * *What kinds of issues might you run into with your API?*
        * Risk of being IP-blocked if making over 1000 API cllas per minute
        * Mapping player IDs to the "fetch all players" call and saving that information to my server and how to update this info as player information changes (only one call per day allowed)
@@ -22,6 +22,7 @@
         * Allow users to vote on league rules
         * Allow users to declare keepers
     * *What will the user flow look like?*
-      * coming soon
+      * User will register/login and be redirected to user home page. User homepage displays user info, user roster, ect. Navbar will contain links to draftboard results, league rules, show all rosters, playoff results, and voting portal. If logged in, users will be able to vote yes or no on rule proposals that only logged in users can create.
     * *What features make your site more than CRUD? Do you have any stretch goals?*
+      * Allow users to propose new rules and submit votes on those rules
       * Create custom power rankings using statistical analysis

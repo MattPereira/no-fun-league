@@ -1,12 +1,12 @@
 {% extends 'base.html'  %}
 
-{% block title %}Register{% endblock%}
+{% block title %}Edit User{% endblock%}
 
 {% block content %}
 
-<h1 class="display-3 text-center mb-3">Register</h1>
+<h1 class="display-3 text-center mb-3">Edit User Details</h1>
 
-<form method="POST" action="/register">
+<form method="POST" action="/users/{{user.username}}/update">
 
   {{ form.hidden_tag() }}
 
@@ -26,7 +26,7 @@
 
 <div class="row justify-content-center">
   <div class="col-md-6 d-flex justify-content-end">
-    <button class="btn btn-success" type="submit">Register</button>
+    <button class="btn btn-success" type="submit">Update</button>
   </div>
 </div>
 

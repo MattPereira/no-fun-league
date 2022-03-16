@@ -7,6 +7,9 @@
 <div class="row">
     <div class="col-md-9">
         <div class="row text-center">
+            <div class="col-2">
+                <img class="img-fluid" src="https://sleepercdn.com/avatars/{{user_data['avatar']}}">
+            </div>
             <div class="col-auto">
                 <p><b><u>USERNAME</u></b></p>
                 <p> {{user.username}}</p>
@@ -19,43 +22,30 @@
                 <p><b><u>FULL NAME</u></b></p>
                 <p>{{user.first_name}} {{user.last_name}}</p>
             </div>
+            <div class="col-auto">
+                <p><b><u>USER_ID</u></b></p>
+                <p>{{user_data['user_id']}}</p>
+            </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="d-flex justify-content-end">
-            <form action="/users/{{user.username}}/delete" method="POST">
-                <button type="submit" class="btn btn-danger">Delete Self</button>
+            <form action="/users/{{user.username}}/update">
+                <button type="submit" class="btn btn-warning">Edit User Details</button>
             </form>
         </div>
     </div>
 </div>
 
 
+<h3 class="display-3 text-center">ROSTER</h3>
 
+<p>{{roster}}</p>
 
-<h5 class="display-5 text-center">Feedback</h5>
-<div class="d-flex justify-content-center">
-    <a href="/users/{{user.username}}/feedback/add" class="btn btn-primary">Add Feedback</a>
-</div>
+{{league_data[2]['owner_id']}}
 
-
-{% for feedback in user.feedback%}
-
-<div class="card my-3">
-    <div class="card-body">
-        <h5 class="card-title">
-            {{feedback.title}}
-            <form style="display:inline;" action="/feedback/{{feedback.id}}/delete" method="POST">
-                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-            </form>
-        </h5>
-        <p class="card-text"> {{feedback.content}}</p>
-        <a href="/feedback/{{feedback.id}}/update" class="btn btn-success">Edit</a>
-    </div>
-</div>
-
-
-{% endfor %}
-
+{% for owner in league_data%}
+<li>{{owner['owner_id']}}</li>
+{% endfor%}
 
 {% endblock %}

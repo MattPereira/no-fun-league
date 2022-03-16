@@ -6,16 +6,15 @@ import email_validator
 
 
 class RegisterForm(FlaskForm):
+    first_name = StringField("First Name", validators=[
+                             InputRequired(), Length(max=30)])
+    last_name = StringField("Last Name", validators=[
+                            InputRequired(), Length(max=30)])
     username = StringField("Username", validators=[
                            InputRequired(), Length(min=3, max=20)])
     password = PasswordField("Password", validators=[InputRequired()])
     email = StringField("Email", validators=[
                         InputRequired(), Email(), Length(min=5, max=50)])
-    first_name = StringField("First Name", validators=[
-                             InputRequired(), Length(max=30)])
-    last_name = StringField("Last Name", validators=[
-                            InputRequired(), Length(max=30)])
-    is_admin = BooleanField("Admin")
 
 
 class LoginForm(FlaskForm):
@@ -25,6 +24,12 @@ class LoginForm(FlaskForm):
                              InputRequired(), Length(min=7, max=30)])
 
 
-class FeedbackForm(FlaskForm):
-    title = StringField("Title", validators=[InputRequired(), Length(max=100)])
-    content = TextAreaField("Content", validators=[InputRequired()])
+class EditUserForm(FlaskForm):
+    first_name = StringField("First Name", validators=[
+                             InputRequired(), Length(max=30)])
+    last_name = StringField("Last Name", validators=[
+                            InputRequired(), Length(max=30)])
+    username = StringField("Username", validators=[
+                           InputRequired(), Length(min=3, max=20)])
+    email = StringField("Email", validators=[
+                        InputRequired(), Email(), Length(min=5, max=50)])

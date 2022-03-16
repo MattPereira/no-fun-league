@@ -1,17 +1,21 @@
 
 from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Feedback
-from forms import RegisterForm, LoginForm, FeedbackForm
+from models import db, connect_db, User
+from forms import RegisterForm, LoginForm, EditUserForm
 from sqlalchemy.exc import IntegrityError
+
+from logic import get_roster
+import requests
 import os
-import re
 
 app = Flask(__name__)
 
 
+# The .replace fixes the error caused by heroku because heroku not up to date with latest sqlalchemy version
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'DATABASE_URL').replace("://", "ql://", 1)
+    'DATABASE_URL', "postgres:///no_fun_league").replace("://", "ql://", 1)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get(
@@ -28,7 +32,7 @@ toolbar = DebugToolbarExtension(app)
 def home_page():
     """redirect to /register"""
 
-    return redirect('/register')
+    return render_template('index.html')
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -46,10 +50,9 @@ def register_user():
         email = form.email.data
         first_name = form.first_name.data
         last_name = form.last_name.data
-        is_admin = form.is_admin.data
 
         new_user = User.register(
-            username, password, email, first_name, last_name, is_admin)
+            username, password, email, first_name, last_name)
         db.session.add(new_user)
 
         try:
@@ -102,95 +105,55 @@ def logout_user():
 def show_user(username):
     """Show information about a user AND show all user submitted feedback"""
 
-    # Extra logic on this route to allow admin users to see other users pages
-    if 'username' not in session:
-        flash('You must be logged in to use this website!', 'danger')
-        return redirect('/login')
-
-    curr_user = session['username']
-
-    if username != curr_user and not User.admin_status(curr_user):
-        return render_template('401.html')
-
-    user = User.query.get_or_404(username)
-
-    return render_template('users/show.html', user=user)
-
-
-@app.route('/users/<username>/delete', methods=["POST"])
-def delete_user(username):
-    """Remove user from db, delete all of user's feedback, cleanse session """
-
     if 'username' not in session or username != session['username']:
         return render_template('401.html')
 
     user = User.query.get_or_404(username)
-    db.session.delete(user)
-    db.session.commit()
-    session.pop('username')
-    flash(f"User {user.username} deleted!", "success")
 
-    return redirect("/")
+    user_res = requests.get(f"https://api.sleeper.app/v1/user/{user.username}")
+    user_data = user_res.json()
 
+    user_id = user_data['user_id']
 
-@app.route('/users/<username>/feedback/add', methods=["POST", "GET"])
-def add_feedback(username):
-    """display feedback form and handle submission of form"""
+    league_res = requests.get(
+        f"https://api.sleeper.app/v1/league/723677559673409536/rosters")
 
-    if 'username' not in session or username != session['username']:
-        return render_template('401.html')
+    league_data = league_res.json()
 
-    form = FeedbackForm()
+    # roster = get_roster(league_data, user_id)
 
-    if form.validate_on_submit():
-        title = form.title.data
-        content = form.content.data
+    print('***************')
+    print(league_data[6]['owner_id'])
+    print(user_id)
+    print(league_data[6]['owner_id'] == user_id)
+    print('************')
+    for owner in league_data:
+        if owner['owner_id'] == user_id:
+            roster = owner
+        else:
+            roster = 'wtf'
 
-        new_feedback = Feedback(
-            title=title, content=content, username=username)
-
-        db.session.add(new_feedback)
-        db.session.commit()
-
-        flash('Thank you for submitting feedback!', 'success')
-        return redirect(f'/users/{new_feedback.username}')
-
-    return render_template('feedback/add.html', form=form, username=username)
+    return render_template('users/show.html', user=user, user_data=user_data, league_data=league_data, roster=roster)
 
 
-@app.route('/feedback/<feedback_id>/update', methods=["GET", "POST"])
-def edit_feedback(feedback_id):
-    """Show edit form and handle submission"""
+@app.route('/users/<username>/update', methods=["GET", "POST"])
+def edit_user(username):
+    """Allow user to edit information about themself"""
 
-    feedback = Feedback.query.get_or_404(feedback_id)
+    user = User.query.get_or_404(username)
 
-    if 'username' not in session or feedback.username != session['username']:
-        return render_template('401.html')
-
-    form = FeedbackForm(obj=feedback)
+    form = EditUserForm(obj=user)
 
     if form.validate_on_submit():
-        feedback.title = form.title.data
-        feedback.content = form.content.data
+        user.username = form.username.data
+        user.email = form.email.data
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
 
-        db.session.add(feedback)
         db.session.commit()
-        flash('Feedback updated!', 'success')
-        return redirect(f'/users/{feedback.username}')
+        session['username'] = user.username
+        flash(
+            f"Successfully updated {user.username}'s information!", "success")
+        return redirect(f'/users/{user.username}')
 
-    return render_template('feedback/edit.html', form=form, feedback=feedback)
-
-
-@app.route('/feedback/<feedback_id>/delete', methods=["POST"])
-def delete_feedback(feedback_id):
-    """Delete feedback if user in session"""
-    feedback = Feedback.query.get_or_404(feedback_id)
-
-    if 'username' not in session or feedback.username != session['username']:
-        return render_template('401.html')
-
-    db.session.delete(feedback)
-    db.session.commit()
-
-    flash('Feedback deleted!', 'success')
-    return redirect(f'/users/{feedback.username}')
+    return render_template('users/edit.html', user=user, form=form)
