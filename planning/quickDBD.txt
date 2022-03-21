@@ -1,0 +1,89 @@
+users
+-
+user_id INTEGER PK
+avatar_id TEXT
+username TEXT
+first_name TEXT
+last_name TEXT
+email TEXT
+password TEXT
+
+
+
+users_comments
+-
+id SERIAL PK
+user_id INTEGER FK >- users.user_id
+comment_id INTEGER FK >- comments.id
+
+comments
+-
+id SERIAL PK
+text TEXT
+
+users_posts
+-
+id SERIAL PK
+user_id INTEGER FK >- users.user_id
+post_id INTEGER FK >- posts.id
+
+posts
+-
+id SERIAL PK
+title TEXT
+content TEXT
+
+users_votes
+-
+id SERIAL PK
+rule_id INTEGER FK >- rule_proposals.id
+user_id INTEGER FK >- users.user_id
+agree BOOLEAN
+
+rule_proposals
+-
+id SERIAL PK
+title TEXT
+description TEXT
+
+players
+-
+id INTEGER PK
+first_name STRING
+last_name STRING
+position STRING
+team STRING
+age INTEGER
+height STRING
+
+
+rosters
+-
+owner_id INTEGER PK FK >- users.user_id
+wins INTEGER
+losses INTEGER
+total_fpts INTEGER
+total_fpts_against INTEGER
+streak TEXT
+record TEXT
+starters_id INTEGER FK >- starters.id
+
+
+starters
+-
+id SERIAL PK
+p1_id INTEGER FK >- players.id
+p2_id INTEGER FK >- players.id
+p3_id INTEGER FK >- players.id
+p4_id INTEGER FK >- players.id
+p5_id INTEGER FK >- players.id
+p6_id INTEGER FK >- players.id
+p7_id INTEGER FK >- players.id
+p8_id INTEGER FK >- players.id
+p9_id INTEGER FK >- players.id
+p10_id INTEGER FK >- players.id
+
+picks
+-
+id SERIAL PK
+user_id STRING

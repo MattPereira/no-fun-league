@@ -1,0 +1,124 @@
+{% extends 'base.html'  %}
+
+{% block title %}DRAFTBOARDS{% endblock%}
+
+{% block content %}
+
+<h1 class="text-center">NO FUN LEAGUE DRAFTBOARD</h1>
+
+
+
+<div class="row text-center">
+    <div class="col-lg-1">
+    <h5>brettp88</h5>
+    {% for pick in draftboard %}
+        {% if pick['draft_slot'] == 1 %}
+            <div class="card mb-1">
+                <div class="card-body">
+                    <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name'][-10:]}}</div>
+                    <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+    <div class="col-lg-1">
+        <h5>Kaelinragan</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 2 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name']}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-1">
+        <h5>Lemonnn</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 3 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name']}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-2">
+        <h5>ifonly</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 4 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name']}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-2">
+        <h5>Truffles29</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 5 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name']}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-2">
+        <h5>michael787</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 6 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name'][-10:]}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-2">
+        <h5>CTizzle85</h5>
+        {% for pick in draftboard %}
+            {% if pick['draft_slot'] == 6 %}
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="card-title">{{pick['metadata']['first_name'][0]}}. {{pick['metadata']['last_name'][-10:]}}</div>
+                        <p class="card-text text-secondary"> {{pick['metadata']['position']}} - {{pick['metadata']['team']}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+{% for pick in draftboard %}
+    
+
+{% endfor %}
+
+
+
+
+{% endblock %}
+
+
+pick['picked_by']
+pick['metadata']['position']
+pick['metadata']['team']
+pick['metadata']['first_name']
+pick['metadata']['last_name']

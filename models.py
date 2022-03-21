@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+import requests
+
 db = SQLAlchemy()
 
 bcrypt = Bcrypt()
@@ -16,26 +18,34 @@ def connect_db(app):
 class User(db.Model):
     __tablename__ = 'users'
 
-    user_id = db.Column(db.String, primary_key=True, nullable=False)
+    id = db.Column(db.String, primary_key=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
+    username = db.Column(db.Text, nullable=False)
+    avatar_id = db.Column(db.Text)
 
     @classmethod
-    def register(cls, user_id, first_name, last_name, email, password):
+    def register(cls, id, first_name, last_name, email, password):
         """Register user w/hashed password & return user."""
 
         hashed = bcrypt.generate_password_hash(password)
         # turn bytestring into normal (unicode utf8) string
         hashed_utf8 = hashed.decode("utf8")
 
+        # Make API call to sleeper to get 'username' and 'avatar'
+        user_data = requests.get(
+            f"https://api.sleeper.app/v1/user/{id}").json()
+
         user = cls(
-            user_id=user_id,
+            id=id,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password=hashed_utf8
+            password=hashed_utf8,
+            username=user_data['username'],
+            avatar_id=user_data['avatar']
         )
         db.session.add(user)
         return user
@@ -53,12 +63,24 @@ class User(db.Model):
             return False
 
 
+class Roster(db.Model):
+    __tablename__ = "rosters"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    owner_id = db.Column(db.String, db.ForeignKey('users.id'))
+    wins = db.Column(db.Integer)
+    losses = db.Column(db.Integer)
+    fpts = db.Column(db.Integer)
+    fpts_against = db.Column(db.Integer)
+    streak = db.Column(db.Text)
+    record = db.Column(db.Text)
+
+
 class Player(db.Model):
     __tablename_ = "players"
 
     id = db.Column(db.String, primary_key=True, nullable=False)
-    first_name = db.Column(db.String)
-    last_name = db.Column(db.String)
+    full_name = db.Column(db.String)
     position = db.Column(db.String)
     team = db.Column(db.String)
     age = db.Column(db.String)

@@ -6,7 +6,7 @@ import email_validator
 
 
 class RegisterForm(FlaskForm):
-    user_id = StringField("User ID", validators=[
+    user_id = StringField("Sleeper User_ID", validators=[
         InputRequired(), Length(max=50)])
     first_name = StringField("First Name", validators=[
                              InputRequired(), Length(max=30)])
