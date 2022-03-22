@@ -1,0 +1,40 @@
+{% extends 'base.html'  %}
+
+{% block title %}Roster Details{% endblock%}
+
+{% block content %}
+<div class="container">
+
+    <div class="row text-center my-5">
+        <div class="col-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.owner.avatar_id}}" alt="">
+                            <div>{{roster.owner.team_name}}</div></th>
+                    </tr>
+                    <tr>
+                        <th>{{roster.record}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in roster.players%}
+                    <tr>
+                       <td>{{player}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>   
+            </table>
+        </div>
+        <div class="col-6">
+            <p>manager: {{roster.owner.user.first_name}} {{roster.owner.user.last_name}}</p>
+            <p>all the other roster season stats here too</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

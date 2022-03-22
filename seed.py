@@ -1,4 +1,4 @@
-from models import db, User, Pick, Roster, Member
+from models import db, User, Pick, Roster, Manager
 from app import app
 import requests
 
@@ -46,13 +46,13 @@ db.session.add_all([matt, brad, lemon, jake, mikey,
 db.session.commit()
 
 
-# ADDS ALL THE MEMBERS INFO
-member_info = requests.get(
+# ADDS ALL THE MANAGERS INFO
+managers_info = requests.get(
     f"https://api.sleeper.app/v1/league/{LEAGUE_ID}/users").json()
 
-for member in member_info:
-    m = Member(user_id=member['user_id'], display_name=member['display_name'],
-               avatar_id=member['avatar'], team_name=member['metadata']['team_name'])
+for manager in managers_info:
+    m = Manager(user_id=manager['user_id'], display_name=manager['display_name'],
+                avatar_id=manager['avatar'], team_name=manager['metadata']['team_name'])
     db.session.add(m)
     db.session.commit()
 
@@ -64,7 +64,7 @@ rosters_data = requests.get(
 
 for roster in rosters_data:
     r = Roster(id=roster['roster_id'], owner_id=roster['owner_id'], wins=roster['settings']['wins'], losses=roster['settings']
-               ['losses'], fpts=roster['settings']['fpts'], fpts_against=roster['settings']['fpts_against'], streak=roster['metadata']['streak'], record=roster['metadata']['record'])
+               ['losses'], ppts=roster['settings']['ppts'], fpts=roster['settings']['fpts'], fpts_against=roster['settings']['fpts_against'], streak=roster['metadata']['streak'], record=roster['metadata']['record'], players=roster['players'])
 
     db.session.add(r)
     db.session.commit()

@@ -1,3 +1,4 @@
+from email.policy import default
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
@@ -55,25 +56,34 @@ class User(db.Model):
             return False
 
 
-class Member(db.Model):
-    __tablename__ = 'members'
-    user_id = db.Column(db.Text, primary_key=True, nullable=False)
+class Manager(db.Model):
+    __tablename__ = 'managers'
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Text, db.ForeignKey(
+        'users.id'), unique=True, nullable=False)
     display_name = db.Column(db.Text)
-    avatar_id = db.Column(db.Text)
+    avatar_id = db.Column(db.Text, default='15d7cf259bc30eab8f6120f45f652fb6')
     team_name = db.Column(db.Text)
+
+    user = db.relationship('User')
 
 
 class Roster(db.Model):
     __tablename__ = "rosters"
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    owner_id = db.Column(db.Text, db.ForeignKey('members.user_id'))
+    owner_id = db.Column(db.Text, db.ForeignKey(
+        'managers.user_id'), unique=True)
     wins = db.Column(db.Integer)
     losses = db.Column(db.Integer)
+    ppts = db.Column(db.Integer)
     fpts = db.Column(db.Integer)
     fpts_against = db.Column(db.Integer)
     streak = db.Column(db.Text)
     record = db.Column(db.Text)
+    players = db.Column(db.PickleType)
+
+    owner = db.relationship('Manager', backref="roster")
 
 
 class Pick(db.Model):
@@ -82,14 +92,14 @@ class Pick(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     roster_id = db.Column(db.Integer)
     draft_id = db.Column(db.Text)
-    picked_by = db.Column(db.Text, db.ForeignKey('members.user_id'))
+    picked_by = db.Column(db.Text, db.ForeignKey('managers.user_id'))
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     position = db.Column(db.String)
     team = db.Column(db.String)
     amount = db.Column(db.String)
 
-    member = db.relationship('Member')
+    owner = db.relationship('Manager')
 
 
 class Player(db.Model):

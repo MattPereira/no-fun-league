@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, redirect, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Player, Roster, Member, Pick
+from models import db, connect_db, User, Player, Roster, Manager, Pick
 from forms import RegisterForm, LoginForm, EditUserForm
 
 
@@ -132,12 +132,39 @@ def edit_user(user_id):
     return render_template('users/edit.html', user=user, form=form)
 
 
+@app.route('/managers')
+def show_managers():
+    """Show list of all managers with link to individual pages"""
+
+    managers = Manager.query.all()
+
+    return render_template('league/managers.html', managers=managers)
+
+
+@app.route('/managers/<int:manager_id>')
+def show_manager(manager_id):
+    """Show details about a manager"""
+
+    manager = Manager.query.get(manager_id)
+
+    return render_template('league/manager.html', manager=manager)
+
+
 @app.route('/rosters', methods=['GET'])
 def show_rosters():
 
     rosters = Roster.query.all()
 
     return render_template('league/rosters.html', rosters=rosters)
+
+
+@app.route('/rosters/<int:roster_id>')
+def show_roster(roster_id):
+    """Show details for a specific roster"""
+
+    roster = Roster.query.get(roster_id)
+
+    return render_template('league/roster.html', roster=roster)
 
 
 @app.route('/draftboard', methods=["GET", "POST"])
@@ -150,19 +177,6 @@ def show_draftboard():
     r5 = Pick.query.filter(Pick.roster_id == 5).order_by('id').all()
 
     return render_template('league/draftboard.html', r1=r1, r2=r2, r3=r3, r4=r4, r5=r5)
-
-
-@app.route('/transactions', methods=['GET'])
-def show_transactions():
-    """Display league transactions, maybe with search by player or week functionality?"""
-
-    # API call returns only 1 specific week at a time
-    res = requests.get(
-        "https://api.sleeper.app/v1/league/723677559673409536/transactions/1")
-
-    transactions = res.json()
-
-    return render_template('league/transactions.html', transactions=transactions)
 
 
 @app.route('/blog', methods=['GET'])

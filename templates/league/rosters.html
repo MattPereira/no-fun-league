@@ -4,30 +4,37 @@
 
 {% block content %}
 
-<h1 class="text-center mb-5">ALL ROSTERS</h1>
+<div class="container">
 
-<div class="row">
+
+<h1 class="text-center my-5">ALL ROSTERS</h1>
+
+<div class="row text-center">
 {% for roster in rosters %}
-<div class="col-auto">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">OWNER: {{roster.owner_id}}</th>
-            </tr>
-            <tr>
-                <th>TOTAL FPTS:{{roster.fpts}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <!-- looping players array for each row -->
-            </tr>
-        </tbody>
-    </table>
-</div>
-
+    <div class="col-sm-6 col-md-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.owner.avatar_id}}" alt="">
+                        <div><a href="/rosters/{{roster.id}}">{{roster.owner.team_name}}</a></div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>{{roster.record}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in roster.players%}
+                <tr>
+                   <td>{{player}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endfor %}
 </div>
-
+</div>
 
 {% endblock %}

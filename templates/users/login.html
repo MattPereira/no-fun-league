@@ -3,26 +3,37 @@
 {% block title %}Login{% endblock%}
 
 {% block content %}
+<div class="container">
 
-<h1 class="display-1">Login</h1>
-<p class="lead">Login below to access flask feedback!</p>
+  <div class="text-center my-3">
+    <h1 class="display-1">Login</h1>
+    <p class="lead">Don't have an account yet? <a href="/register">Register</a></p>
+  </div>
 
-<form method="POST" action="/login">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="POST" action="/login">
 
-  {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}
+      
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>
+          {{ field.label }}
+          {{ field(class_="form-control") }}
+      
+          {% for error in field.errors %}
+          <span class="form-text text-danger">{{ error }}</span>
+          {% endfor %}
+        </p>
+        {% endfor %}
+      
+        <button class="btn btn-success" type="submit">Login</button>
+      
+      </form>
+    </div>
+  </div>
+</div>
 
-  {% for field in form if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field(class_="form-control") }}
 
-    {% for error in field.errors %}
-    <span class="form-text text-danger">{{ error }}</span>
-    {% endfor %}
-  </p>
-  {% endfor %}
 
-  <button class="btn btn-success" type="submit">Login</button>
-
-</form>
 {% endblock %}
