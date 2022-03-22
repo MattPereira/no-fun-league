@@ -31,3 +31,7 @@ class EditUserForm(FlaskForm):
                             InputRequired(), Length(max=30)])
     email = StringField("Email", validators=[
                         InputRequired(), Email(), Length(min=5, max=50)])
+
+
+class FetchDraftForm(FlaskForm):
+    """leave this blank"""

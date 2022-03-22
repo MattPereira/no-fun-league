@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
-import requests
 
 db = SQLAlchemy()
 
@@ -18,13 +17,12 @@ def connect_db(app):
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.String, primary_key=True, nullable=False)
+    # user.id must be set to the unique sleeper ID
+    id = db.Column(db.Text, primary_key=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
-    username = db.Column(db.Text, nullable=False)
-    avatar_id = db.Column(db.Text)
 
     @classmethod
     def register(cls, id, first_name, last_name, email, password):
@@ -34,18 +32,12 @@ class User(db.Model):
         # turn bytestring into normal (unicode utf8) string
         hashed_utf8 = hashed.decode("utf8")
 
-        # Make API call to sleeper to get 'username' and 'avatar'
-        user_data = requests.get(
-            f"https://api.sleeper.app/v1/user/{id}").json()
-
         user = cls(
             id=id,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password=hashed_utf8,
-            username=user_data['username'],
-            avatar_id=user_data['avatar']
+            password=hashed_utf8
         )
         db.session.add(user)
         return user
@@ -63,11 +55,19 @@ class User(db.Model):
             return False
 
 
+class Member(db.Model):
+    __tablename__ = 'members'
+    user_id = db.Column(db.Text, primary_key=True, nullable=False)
+    display_name = db.Column(db.Text)
+    avatar_id = db.Column(db.Text)
+    team_name = db.Column(db.Text)
+
+
 class Roster(db.Model):
     __tablename__ = "rosters"
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    owner_id = db.Column(db.String, db.ForeignKey('users.id'))
+    owner_id = db.Column(db.Text, db.ForeignKey('members.user_id'))
     wins = db.Column(db.Integer)
     losses = db.Column(db.Integer)
     fpts = db.Column(db.Integer)
@@ -76,8 +76,24 @@ class Roster(db.Model):
     record = db.Column(db.Text)
 
 
+class Pick(db.Model):
+    __tablename__ = "picks"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    roster_id = db.Column(db.Integer)
+    draft_id = db.Column(db.Text)
+    picked_by = db.Column(db.Text, db.ForeignKey('members.user_id'))
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    position = db.Column(db.String)
+    team = db.Column(db.String)
+    amount = db.Column(db.String)
+
+    member = db.relationship('Member')
+
+
 class Player(db.Model):
-    __tablename_ = "players"
+    __tablename__ = "players"
 
     id = db.Column(db.String, primary_key=True, nullable=False)
     full_name = db.Column(db.String)

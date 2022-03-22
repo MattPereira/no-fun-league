@@ -1,33 +1,33 @@
 {% extends 'base.html'  %}
 
-{% block title %}DRAFTBOARDS{% endblock%}
+{% block title %}Rosters{% endblock%}
 
 {% block content %}
 
 <h1 class="text-center mb-5">ALL ROSTERS</h1>
 
 <div class="row">
-    {% for roster in rosters%}
-    <div class="col-md-6 mb-5">
-        <h5>owner_id: {{roster['owner_id']}}</h5>
-        {{roster['players']}}
-    </div>
-    {% endfor %}
+{% for roster in rosters %}
+<div class="col-auto">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">OWNER: {{roster.owner_id}}</th>
+            </tr>
+            <tr>
+                <th>TOTAL FPTS:{{roster.fpts}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- looping players array for each row -->
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-{{users[0]}}
-
-<div class="row">
-    {% for user in users%}
-        <div class="col-auto mb-5">
-            <p><b>user_id : </b>{{user['user_id']}}</p> 
-            <p><b>team_name : </b>{{user['metadata']['team_name']}}</p>
-            <p><b>display_name: </b> {{user['display_name']}}</p>
-            <p><b>avatar_id: {{user['avatar']}}</b></p>
-         </div>
-    {% endfor %}
+{% endfor %}
 </div>
-
 
 
 {% endblock %}

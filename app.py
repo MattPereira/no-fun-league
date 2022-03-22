@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, redirect, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Player
+from models import db, connect_db, User, Player, Roster, Member, Pick
 from forms import RegisterForm, LoginForm, EditUserForm
 
 
@@ -103,13 +103,7 @@ def show_user(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    league_data = requests.get(
-        f"https://api.sleeper.app/v1/league/723677559673409536/rosters").json()
-
-    print(type(league_data))
-    roster = get_roster(league_data, user.id)
-
-    return render_template('users/show.html', user=user, league_data=league_data, roster=roster)
+    return render_template('users/show.html', user=user)
 
 
 @app.route('/users/<user_id>/update', methods=["GET", "POST"])
@@ -141,28 +135,21 @@ def edit_user(user_id):
 @app.route('/rosters', methods=['GET'])
 def show_rosters():
 
-    # YOU CAN JUST HANG THE .json() off the end of call instead of creating extra variables!
-    rosters = requests.get(
-        "https://api.sleeper.app/v1/league/723677559673409536/rosters").json()
+    rosters = Roster.query.all()
 
-    users = requests.get(
-        'https://api.sleeper.app/v1/league/723677559673409536/users').json()
-
-    # users contains avatars but not all teams have one set properly
-    # let users choose avatar url in form and store in database instead?
-
-    return render_template('league/rosters.html', rosters=rosters, users=users)
+    return render_template('league/rosters.html', rosters=rosters)
 
 
-@app.route('/draftboard', methods=["GET"])
+@app.route('/draftboard', methods=["GET", "POST"])
 def show_draftboard():
 
-    res = requests.get(
-        'https://api.sleeper.app/v1/draft/723677560327737344/picks')
+    r1 = Pick.query.filter(Pick.roster_id == 1).order_by('id').all()
+    r2 = Pick.query.filter(Pick.roster_id == 2).order_by('id').all()
+    r3 = Pick.query.filter(Pick.roster_id == 3).order_by('id').all()
+    r4 = Pick.query.filter(Pick.roster_id == 4).order_by('id').all()
+    r5 = Pick.query.filter(Pick.roster_id == 5).order_by('id').all()
 
-    draft_res = res.json()
-
-    return render_template('league/draftboard.html', draftboard=draft_res)
+    return render_template('league/draftboard.html', r1=r1, r2=r2, r3=r3, r4=r4, r5=r5)
 
 
 @app.route('/transactions', methods=['GET'])
