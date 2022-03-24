@@ -7,21 +7,24 @@
 <div class="container">
 
 
-<h1 class="text-center my-5">ALL ROSTERS</h1>
+<h1 class="text-center my-5 text-white">ALL ROSTERS</h1>
+
+<p>{{players}}</p>
 
 <div class="row text-center">
 {% for roster in rosters %}
     <div class="col-sm-6 col-md-4">
-        <table class="table table-bordered">
+        <table class="table table-bordered bg-white">
             <thead>
                 <tr>
                     <th scope="col">
-                        <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.owner.avatar_id}}" alt="">
-                        <div><a href="/rosters/{{roster.id}}">{{roster.owner.team_name}}</a></div>
+                        <a href="/rosters/{{roster.id}}">
+                        <div>
+                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
+                            <div>{{roster.manager.team_name}}</div>
+                        </div>
+                        </a>
                     </th>
-                </tr>
-                <tr>
-                    <th>{{roster.record}}</th>
                 </tr>
             </thead>
             <tbody>

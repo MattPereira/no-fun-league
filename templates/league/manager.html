@@ -5,60 +5,45 @@
 {% block content %}
 
 <div class="container">
+    {% if session['user_id'] == manager.user.id %}
+    <div class="row justify-content-end mt-3">
+        <div class="col-auto">
+            <a href="/users/{{manager.user.id}}/update" class="btn btn-warning">EDIT PROFILE</a>
+        </div>
+    </div>
+    {% endif %}
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5 text-white">
         <div class="col-md-10">
             <div class="d-flex justify-content-center">
-                <img class="img-fluid rounded-circle border border-white border-2 w-25" src="https://sleepercdn.com/avatars/{{manager.avatar_id}}" alt="">
+                <img class="img-fluid rounded-circle border border-white border-3 w-25" src="https://sleepercdn.com/avatars/{{manager.avatar_id}}" alt="">
             </div>
             <div class="text-center my-3">
                 <h1 class="display-5">{{manager.user.first_name}} {{manager.user.last_name}}</h1>
                 <h5 class="text-secondary">Manager of <i>{{manager.team_name}}</i> </h5>
             </div>
             <div class="row justify-content-between text-center">
-                <div class="col-3 mt-3">[Location]</div>
-                <div class="col-3 mt-3">Years in League: [Years]</div>
-                <div class="col-3">
-                    <img class="rounded-circle w-25" src="https://sleepercdn.com/images/team_logos/nfl/mia.png" alt="">
+                <div class="col-md-3 mt-3">
+                    <p><b><u>Location</u></b></p>
+                    {{manager.user.location}}
+                </div>
+                <div class="col-md-3 mt-3">
+                    <p><b><u>Playing FF Since</u></b></p>
+                    {{manager.user.ff_since}}
+                </div>
+                <div class="col-md-3">
+                    <p class="mb-0 mt-3"><b><u>Fav Team</u></b></p>
+                    <img class="rounded-circle w-25" src="https://sleepercdn.com/images/team_logos/nfl/{{manager.user.fav_team}}.png" alt="">
                 </div>
                 <div class="my-3">
-                    <p>BIO: Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi incidunt adipisci nobis corporis veniam voluptatibus, velit reiciendis ab repudiandae. Cupiditate quis atque eum commodi fuga dolorum eos blanditiis earum ipsa.
-                    Repellendus modi illo aut ducimus culpa cupiditate?</p>
+                    <p class="lead">{{manager.user.bio}}</p>
                 </div>
                 <div class="my-3">
-                    <h6>Manager Philosophy</h6>
-                    <p><i>some philosophy goes here</i></p>
+                    <h6>Team Philosophy</h6>
+                    <p><i>{{manager.user.philosophy}}</i></p>
                 </div>
                 <div>
-                    <div class="row justify-content-center text-center my-5">
-                        <div class="col-md-6">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">
-                                            <div>{{manager.team_name}}</div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for player in manager.roster[0].players%}
-                                    <tr>
-                                       <td>{{player}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>   
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Current Season Aggregates</h5>
-                            <p>Streak: {{manager.roster[0].streak}}</p>
-                            <p>W/L Record: {{manager.roster[0].wins}} - {{manager.roster[0].losses}}</p>
-                            <p>Projected Fantasy Points Scored: {{manager.roster[0].ppts}}</p>
-                            <p>Total Fantasy Points Scored: {{manager.roster[0].fpts}}</p>
-                            <p>Total Fantasy Points Against: {{manager.roster[0].fpts_against}}</p>
-                            <p>Weekly Record: {{manager.roster[0].record}}</p>
-                        </div>
-                    </div>
+                    <a href="/rosters/{{manager.roster[0].id}}" class="btn btn-primary">ROSTER</a>
                 </div>
             </div>
         </div>

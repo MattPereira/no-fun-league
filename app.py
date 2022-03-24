@@ -1,13 +1,14 @@
 
 from flask import Flask, render_template, redirect, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Player, Roster, Manager, Pick
+from models import db, connect_db, User, Player, Roster, Manager, Pick, Post
 from forms import RegisterForm, LoginForm, EditUserForm
 
 
 from logic import get_roster
 import requests
 import os
+import json
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def register_user():
     """show register form and handle user registration"""
 
     if "user_id" in session:
-        return redirect(f"/users/{session['user_id']}")
+        return redirect(f"/mangers/{session['user_id']}")
 
     form = RegisterForm()
 
@@ -57,9 +58,9 @@ def register_user():
 
         db.session.commit()
 
-        session['user_id'] = new_user.user_id
-        flash('Welcome! Successfully Created Your Account!', "success")
-        return redirect(f'/users/{new_user.user_id}')
+        session['user_id'] = new_user.id
+        flash('Welcome to the No Fun League! Please edit your profile!', "success")
+        return redirect(f'/managers/{new_user.manager.id}')
 
     return render_template('users/register.html', form=form)
 
@@ -69,7 +70,7 @@ def login_user():
     """show login form and handle user login"""
 
     if "user_id" in session:
-        return redirect(f"/users/{session['user_id']}")
+        return redirect(f"/")
 
     form = LoginForm()
 
@@ -80,9 +81,9 @@ def login_user():
         user = User.authenticate(email, password)
 
         if user:
-            flash(f"Welcome back!", "success")
-            session['user_id'] = user.user_id
-            return redirect(f'/users/{user.user_id}')
+            flash(f"Welcome back {user.first_name}!", "success")
+            session['user_id'] = user.id
+            return redirect(f'/managers/{user.id}')
         else:
             form.email.errors = ['Invalid email/password']
 
@@ -109,10 +110,11 @@ def show_user(user_id):
 @app.route('/users/<user_id>/update', methods=["GET", "POST"])
 def edit_user(user_id):
     """Allow user to edit information about themself"""
+    #### COME BACK TO FIGURE OUT PASSWORD CHANGING ####
 
     user = User.query.get_or_404(user_id)
 
-    if 'user_id' not in session or user.user_id != session['user_id']:
+    if 'user_id' not in session or user.id != session['user_id']:
         return render_template('401.html')
 
     form = EditUserForm(obj=user)
@@ -121,13 +123,16 @@ def edit_user(user_id):
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.email = form.email.data
-        # come back to figure out how to allow password changing?
+        user.location = form.location.data
+        user.ff_since = form.ff_since.data
+        user.fav_team = form.fav_team.data
+        user.bio = form.bio.data
+        user.philosophy = form.philosophy.data
 
         db.session.commit()
-        session['user_id'] = user.user_id
         flash(
-            f"Successfully updated your information!", "success")
-        return redirect(f'/users/{user.user_id}')
+            f"Successfully updated {user.first_name}'s profile!", "success")
+        return redirect(f'/managers/{user.id}')
 
     return render_template('users/edit.html', user=user, form=form)
 
@@ -141,11 +146,12 @@ def show_managers():
     return render_template('league/managers.html', managers=managers)
 
 
-@app.route('/managers/<int:manager_id>')
-def show_manager(manager_id):
+@app.route('/managers/<int:user_id>')
+def show_manager(user_id):
     """Show details about a manager"""
 
-    manager = Manager.query.get(manager_id)
+    user = User.query.get(user_id)
+    manager = user.manages[0]
 
     return render_template('league/manager.html', manager=manager)
 
@@ -164,7 +170,10 @@ def show_roster(roster_id):
 
     roster = Roster.query.get(roster_id)
 
-    return render_template('league/roster.html', roster=roster)
+    players = Player.query.filter(Player.id.in_(
+        roster.players)).order_by('position').all()
+
+    return render_template('league/roster.html', roster=roster, players=players)
 
 
 @app.route('/draftboard', methods=["GET", "POST"])
@@ -181,41 +190,32 @@ def show_draftboard():
 
 @app.route('/blog', methods=['GET'])
 def show_blog():
+    """Show all blog posts by order of most recent"""
+    posts = Post.query.order_by(Post.created_at.desc()).all()
 
-    return render_template('league/blog.html')
+    return render_template('league/blog.html', posts=posts)
 
 
-@app.route('/voting', methods=['GET'])
-def show_voting():
+@app.route('/polls', methods=['GET'])
+def show_polls():
 
-    return render_template('league/voting.html')
+    return render_template('league/polls.html')
 
 
 @app.route('/update_players', methods=["GET"])
 def fetch_players():
-    """NEEDS TONS OF WORK"""
-    # res = requests.get("https://api.sleeper.app/v1/players/nfl")
+    """Temporary route to fetch player info. can it be a get if it posts/patches data to local db?"""
+    # players = requests.get("https://api.sleeper.app/v1/players/nfl")
 
-    f = open('tiny_players.json', 'r')
+    f = open('players.json', 'r')
 
-    players = f.read()
+    players = json.loads(f.read())
 
-    print('********************')
-    print(players)
-    print('********************')
+    for player in players.values():
+        p = Player(id=player.get('player_id'), last_name=player.get('last_name'), full_name=player.get('full_name'),
+                   position=player.get('position'), team=player.get('team'), age=player.get('age'), height=player.get('height'))
 
-    # for player in player_data:
-    #     p = Player(
-    #         id=player['id'],
-    #         first_name=player['first_name'],
-    #         last_name=player['last_name'],
-    #         position=player['position'],
-    #         team=player['team'],
-    #         age=player['age'],
-    #         height=player['height']
-    #     )
-
-    #     db.session.add(p)
-    #     db.session.commit()
+        db.session.add(p)
+        db.session.commit()
 
     return players

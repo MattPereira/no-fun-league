@@ -1,4 +1,4 @@
-from models import db, User, Pick, Roster, Manager
+from models import db, User, Pick, Roster, Manager, Post
 from app import app
 import requests
 
@@ -10,39 +10,47 @@ db.drop_all()
 db.create_all()
 
 # # Input all the users. Special attention to provide correct user_id
-matt = User.register(id='724424250483650560', first_name='Matt',
+matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
                      last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
 
-brad = User.register(id='470093099188613120', first_name='Brad',
+brad = User.register(sleeper_id='470093099188613120', first_name='Brad',
                      last_name='Johnson', email="bJohnson@gmail.com", password='eclipse21')
 
-jake = User.register(id='723670786174451712', first_name='Jake',
+jake = User.register(sleeper_id='723670786174451712', first_name='Jake',
                      last_name='Dame', email="jakeD@gmail.com", password='eclipse21')
 
-lemon = User.register(id='723692755766849536', first_name='Chris',
+lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
                       last_name='Hall', email="cHall@gmail.com", password='eclipse21')
 
-mikey = User.register(id='725910594263265280', first_name='Mikey',
+mikey = User.register(sleeper_id='725910594263265280', first_name='Mikey',
                       last_name='unknown', email="mikey@gmail.com", password='eclipse21')
 
-michael = User.register(id='723694715693821952', first_name='Michael',
+michael = User.register(sleeper_id='723694715693821952', first_name='Michael',
                         last_name='Meyer', email="mmeyer@gmail.com", password='eclipse21')
 
-chris = User.register(id='725808119531286528', first_name='Chris',
+chris = User.register(sleeper_id='725808119531286528', first_name='Chris',
                       last_name='Thomas', email="cThomas@gmail.com", password='eclipse21')
 
-kaelin = User.register(id='469946665449549824', first_name='Kaelin',
+kaelin = User.register(sleeper_id='469946665449549824', first_name='Kaelin',
                        last_name='Ragan', email="kRagan@gmail.com", password='eclipse21')
 
-brett = User.register(id='725777513267126272', first_name='Brett',
+brett = User.register(sleeper_id='725777513267126272', first_name='Brett',
                       last_name='Psomething', email="brettP@gmail.com", password='eclipse21')
 
-grant = User.register(id='469964078912106496', first_name='Grant',
+grant = User.register(sleeper_id='469964078912106496', first_name='Grant',
                       last_name='idk', email="grant@gmail.com", password='eclipse21')
 
 
 db.session.add_all([matt, brad, lemon, jake, mikey,
                    michael, chris, kaelin, brett, grant])
+db.session.commit()
+
+###### Add some posts for testing ########
+p1 = Post(user_id=1, title="Welcome to the managers", content="Greetings No Fun League managers! Welcome to our new site. Initially, I am hoping we will be able to use this site to manage our voting process for new rule proposals. Eventually, many useful features may be added since a few of our league managers are/ will eventually become professional software engineers. Thanks.")
+
+p2 = Post(user_id=2, title="Test post from another user",
+          content="We are testing posting functionality here")
+db.session.add_all([p1, p2])
 db.session.commit()
 
 

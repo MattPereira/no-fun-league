@@ -4,21 +4,18 @@
 
 {% block content %}
 
-<h1 class="text-center display-5 my-5">BLOG</h1>
+<h1 class="text-center display-5 my-5 text-white">The No Fun League Blog</h1>
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit eligendi natus porro, possimus veritatis, suscipit debitis vel a non quo laboriosam hic quia deserunt nesciunt tempora magni deleniti maxime rem.
-        Blanditiis, harum dolor a architecto eaque earum eligendi impedit fuga voluptatum excepturi reprehenderit illo eum porro obcaecati nesciunt ea voluptatibus molestiae minus inventore tempore. Laboriosam, maxime distinctio. Iure, beatae voluptatum?
-        Adipisci et beatae rem ullam suscipit ipsam ex dignissimos maxime molestias modi facere, veritatis error deserunt sequi, eius fugiat quod quam illum. Aperiam ea dignissimos, rem minima ullam corporis voluptatem!
-        Quia, at! Quos tempore eum odio ducimus! Aliquam quod quo sint vitae alias excepturi quos repudiandae molestias hic minima dolor corporis, asperiores totam ratione repellat ipsam veritatis. Ea, maxime amet.
-        Dolore obcaecati odit maxime commodi nostrum rem ipsa totam voluptatem laboriosam veritatis consequatur beatae eum, aperiam corrupti officia reiciendis fugiat quidem atque repudiandae dicta molestiae neque. Temporibus, suscipit. </p>
-        <p>Asperiores, fuga.
-            Repellendus officiis sunt debitis assumenda, aspernatur animi blanditiis nam et accusamus modi tempora voluptatibus eius incidunt maxime ipsum. Vero quisquam minima accusamus et nobis sapiente consequuntur omnis repellat debitis explicabo.
-            Natus optio quos consectetur autem repellat sed delectus quidem quasi veritatis culpa. Officia cupiditate inventore fugiat necessitatibus, impedit quibusdam repellat nobis. Odio, dolorem. Alias harum voluptas expedita nihil totam nam.
-            Voluptatibus dolore adipisci, libero ex et placeat consequatur totam, voluptates corporis optio, sunt dolor illo eaque alias quae omnis hic praesentium nesciunt rem! Autem repellat iure quasi suscipit provident modi?
-            Consectetur tenetur repellat perspiciatis beatae. Excepturi, exercitationem! Mollitia similique quia pariatur quod a vero porro officia quisquam? Omnis, quasi porro ullam hic impedit necessitatibus voluptatibus cumque libero, nam labore quibusdam.
-            Voluptatum enim quia repellat quis voluptatem nesciunt recusandae quo possimus facilis optio neque sapiente dolorem veniam accusamus, unde natus atque? Minus magnam, ut laborum laudantium molestias sapiente pariatur veniam excepturi.</p>
+<div class="row justify-content-center text-white">
+    <div class="col-10">
+        {% for post in posts %}
+        <div class=" pt-5 px-5 pb-2 bg-secondary border border-white border-2 mb-4 rounded">
+            <h5 class="text-center mb-4">{{post.title}}</h5>
+            <p>{{post.content}}</p>
+            <hr class="bg-white border-5 border-white">
+            <p><i>By {{post.posted_by.full_name}}</i> on {{post.friendly_datetime}} </p>
+        </div>
+    {% endfor %}
     </div>
 </div>
 

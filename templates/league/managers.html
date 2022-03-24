@@ -9,8 +9,8 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
             {% for manager in managers %}
-            <a href="/managers/{{manager.id}}">
-            <div class="row border border-dark rounded-pill mb-3 py-3 bg-dark text-white">
+            <a href="/managers/{{manager.user.id}}">
+            <div class="row border border-dark rounded-pill mb-3 py-3 bg-secondary text-white">
                 <div class="d-none d-lg-flex col-md-1">
                     <img class="img-fluid rounded-circle border border-white border-2" src="https://sleepercdn.com/avatars/thumbs/{{manager.avatar_id}}" alt="">
                 </div>
@@ -21,7 +21,7 @@
                    <i>"{{manager.team_name}}"</i>
                 </div>
                 <div class="d-none d-lg-flex col-1">
-                    <img class="img-fluid rounded-circle" src="https://sleepercdn.com/images/team_logos/nfl/mia.png" alt="">
+                    <img class="img-fluid rounded-circle" src="https://sleepercdn.com/images/team_logos/nfl/{{manager.user.fav_team}}.png" alt="">
                 </div>
             </div>
             </a>

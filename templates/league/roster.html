@@ -5,30 +5,80 @@
 {% block content %}
 <div class="container">
 
-    <div class="row text-center my-5">
+    <div class="row my-5 justify-content-center">
         <div class="col-4">
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-bordered bg-white">
+                <thead class="text-center">
                     <tr>
                         <th scope="col">
-                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.owner.avatar_id}}" alt="">
-                            <div>{{roster.owner.team_name}}</div></th>
-                    </tr>
-                    <tr>
-                        <th>{{roster.record}}</th>
+                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
+                            <div>{{roster.manager.team_name}}</div></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for player in roster.players%}
+                    {% for player in players%}
                     <tr>
-                       <td>{{player}}</td>
+                        {% if player.full_name %}
+                        <td>
+                            <span 
+                            {% if player.position == 'QB' %}
+                            class="badge bg-danger"
+                            {% elif player.position == 'RB'%}
+                            class="badge bg-success"
+                            {% elif player.position == 'WR'%}
+                            class="badge bg-primary"
+                            {% elif player.position == 'TE'%}
+                            class="badge bg-info"
+                            {% endif%}
+                            > {{player.position}} </span>
+                            {{player.team}} <b>{{player.full_name}}</b>
+                        </td>
+                       {% else %}
+                        <td><span class="badge bg-secondary">DEF</span> {{player.team}} <b>{{player.last_name}}</b>  </td>
+                       {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>   
             </table>
         </div>
         <div class="col-6">
-            <p>manager: {{roster.owner.user.first_name}} {{roster.owner.user.last_name}}</p>
+            <table class="table table-bordered bg-white text-center">
+                <tbody>
+                    <tr>
+                        <td>Manager</td>
+                        <td><a href="/managers/{{roster.manager.user.id}}">{{roster.manager.user.full_name}}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Wins</td>
+                        <td>{{roster.wins}}</td>
+                    </tr>
+                    <tr>
+                        <td>Losses</td>
+                        <td>{{roster.losses}}</td>
+                    </tr>
+                    <tr>
+                        <td>Potential FPTS</td>
+                        <td>{{roster.ppts}}</td>
+                    </tr>
+                    <tr>
+                        <td>Actual FPTS</td>
+                        <td>{{roster.fpts}}</td>
+                    </tr>
+                    <tr>
+                        <td>FPTS Against </td>
+                        <td>{{roster.fpts_against}}</td>
+                    </tr>
+                    <tr>
+                        <td>Streak </td>
+                        <td>{{roster.streak}}</td>
+                    </tr>
+                    <tr>
+                        <td>Record By Week</td>
+                        <td>{{roster.record}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>manager: </p>
             <p>all the other roster season stats here too</p>
         </div>
     </div>
