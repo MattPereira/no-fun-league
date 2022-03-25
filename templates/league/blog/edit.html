@@ -1,14 +1,14 @@
 {% extends 'base.html'  %}
 
-{% block title %}New Post{% endblock%}
+{% block title %}Edit Post{% endblock%}
 
 {% block content %}
 
-<h1 class="text-center display-5 my-5 text-white">Create Blog Post</h1>
+<h1 class="text-center display-5 my-5 text-white">Edit Your Post</h1>
 
 <div class="row justify-content-center text-white">
     <div class="col-md-8">
-      <form method="POST" action="/blog/new">
+      <form method="POST" action="/blog/{{post.id}}/edit">
 
         {{ form.hidden_tag() }}
       
@@ -25,7 +25,7 @@
 
         <div class="row justify-content-end">
             <div class="col-auto">
-                <button class="btn btn-primary" type="submit">Add Post</button>
+                <button class="btn btn-primary" type="submit">Edit Post</button>
             </div>
         </div>
       </form>

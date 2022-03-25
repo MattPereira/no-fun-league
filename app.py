@@ -241,7 +241,52 @@ def add_post():
 
     form = BlogForm()
 
+    if form.validate_on_submit():
+        post = Post(user_id=g.user.id, title=form.title.data,
+                    content=form.content.data)
+        db.session.add(post)
+        db.session.commit()
+
+        flash(f"{g.user.first_name} has successfully create a blog post!", "success")
+        return redirect('/blog')
+
     return render_template('league/blog/new.html', form=form)
+
+
+@app.route('/blog/<int:post_id>/edit', methods=["GET", "POST"])
+def edit_post(post_id):
+    """Handle display of edit form and editing a blog post"""
+
+    post = Post.query.get(post_id)
+
+    form = BlogForm(obj=post)
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+
+        flash("You have successfully edited your post!", "success")
+        return redirect('/blog')
+
+    return render_template('league/blog/edit.html', form=form, post=post)
+
+
+@app.route('/blog/<int:post_id>/delete', methods=["POST"])
+def destroy_post(post_id):
+    """Handle deletion of a blog post"""
+
+    post = Post.query.get(post_id)
+
+    if post.user_id != g.user.id:
+        flash("You may only delete your own posts!", "danger")
+        return redirect('/blog')
+
+    db.session.delete(post)
+    db.session.commit()
+    flash("You have successfully deleted your post!", "success")
+
+    return redirect('/blog')
 
 
 @app.route('/polls', methods=['GET'])
