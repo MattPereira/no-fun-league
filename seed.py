@@ -1,8 +1,11 @@
-from models import db, User, Pick, Roster, Manager, Post
+from models import db, User, Pick, Roster, Manager, Post, Proposal, ProposalVotes, Player
 from app import app
 import requests
+import json
 
 LEAGUE_ID = 723677559673409536
+
+DRAFT_ID = 723677560327737344
 
 # Create all tables
 
@@ -46,13 +49,42 @@ db.session.add_all([matt, brad, lemon, jake, mikey,
 db.session.commit()
 
 ###### Add some posts for testing ########
-p1 = Post(user_id=1, title="Welcome to the managers", content="Greetings No Fun League managers! Welcome to our new site. Initially, I am hoping we will be able to use this site to manage our voting process for new rule proposals. Eventually, many useful features may be added since a few of our league managers are/ will eventually become professional software engineers. Thanks.")
+post1 = Post(user_id=1, title="Welcome to the managers", content="Greetings No Fun League managers! Welcome to our new site. Initially, I am hoping we will be able to use this site to manage our voting process for new rule proposals. Eventually, many useful features may be added since a few of our league managers are/ will eventually become professional software engineers. Thanks.")
 
-p2 = Post(user_id=2, title="Test post from another user",
-          content="We are testing posting functionality here")
-db.session.add_all([p1, p2])
+post2 = Post(user_id=2, title="Test post from another user",
+             content="We are testing posting functionality here")
+db.session.add_all([post1, post2])
 db.session.commit()
 
+
+######## Add some rule proposals for testing ############
+prop1 = Proposal(user_id=4, ammendment="Reinstate kickers as a real fantasy position",
+                 argument="Kickers are fantasy player too. They should not be discrimated against. They should be celebrated!")
+
+prop2 = Proposal(user_id=2, ammendment="Change QB2 starting roster position to a super flex instead",
+                 argument="This rule change will allow for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels bad when you dont have a second QB to start on your roster. ")
+db.session.add_all([prop1, prop2])
+db.session.commit()
+
+
+########## Add some votes on the propposals ##############
+v1 = ProposalVotes(proposal_id=1, user_id=1, agree=True)
+v2 = ProposalVotes(proposal_id=1, user_id=2, agree=True)
+v3 = ProposalVotes(proposal_id=1, user_id=3, agree=True)
+v4 = ProposalVotes(proposal_id=1, user_id=4, agree=True)
+v5 = ProposalVotes(proposal_id=1, user_id=5, agree=False)
+v6 = ProposalVotes(proposal_id=1, user_id=6, agree=False)
+v7 = ProposalVotes(proposal_id=2, user_id=1, agree=False)
+v8 = ProposalVotes(proposal_id=2, user_id=2, agree=False)
+v9 = ProposalVotes(proposal_id=2, user_id=3, agree=False)
+v10 = ProposalVotes(proposal_id=2, user_id=4, agree=True)
+v11 = ProposalVotes(proposal_id=1, user_id=7, agree=True)
+v12 = ProposalVotes(proposal_id=1, user_id=8, agree=True)
+v13 = ProposalVotes(proposal_id=1, user_id=9, agree=True)
+
+
+db.session.add_all([v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13])
+db.session.commit()
 
 # ADDS ALL THE MANAGERS INFO
 managers_info = requests.get(
@@ -66,24 +98,57 @@ for manager in managers_info:
 
 
 # ADDS ALL THE ROSTERS DATA FOR LEAGUE
+
 rosters_data = requests.get(
-    "https://api.sleeper.app/v1/league/723677559673409536/rosters").json()
+    f"https://api.sleeper.app/v1/league/{LEAGUE_ID}/rosters").json()
 
 
 for roster in rosters_data:
-    r = Roster(id=roster['roster_id'], owner_id=roster['owner_id'], wins=roster['settings']['wins'], losses=roster['settings']
-               ['losses'], ppts=roster['settings']['ppts'], fpts=roster['settings']['fpts'], fpts_against=roster['settings']['fpts_against'], streak=roster['metadata']['streak'], record=roster['metadata']['record'], players=roster['players'])
+    r = Roster(
+        id=roster['roster_id'],
+        owner_id=roster['owner_id'],
+        wins=roster['settings']['wins'],
+        losses=roster['settings']['losses'],
+        ppts=roster['settings']['ppts'],
+        fpts=roster['settings']['fpts'],
+        fpts_against=roster['settings']['fpts_against'],
+        streak=roster['metadata']['streak'],
+        record=roster['metadata']['record'],
+        player_ids=roster['players'])
 
     db.session.add(r)
     db.session.commit()
 
-
 # ADDS ALL THE DRAFT DATA FOR SPECIFIC 2021 DRAFT
+
 draft_data = requests.get(
-    'https://api.sleeper.app/v1/draft/723677560327737344/picks').json()
+    f'https://api.sleeper.app/v1/draft/{DRAFT_ID}/picks').json()
 
 for pick in draft_data:
     p = Pick(roster_id=pick['roster_id'], draft_id=pick['draft_id'], picked_by=pick['picked_by'],
              first_name=pick['metadata']['first_name'], last_name=pick['metadata']['last_name'], position=pick['metadata']['position'], team=pick['metadata']['team'], amount=pick['metadata']['amount'])
     db.session.add(p)
     db.session.commit()
+
+
+### ADDS ALL THE PLAYERS WHO HAVE AN ID ON SOME ROSTER TO PLAYER TABLE ####
+
+f = open('players.json', 'r')
+
+players = json.loads(f.read())
+
+rosters = Roster.query.all()
+
+# TARGET ONLY THE PLAYERS THAT ARE PRESENT IN OUR LEAGUE #
+all_p_ids = []
+for roster in rosters:
+    for id in roster.player_ids:
+        all_p_ids.append(id)
+
+for player in players.values():
+    if player['player_id'] in all_p_ids:
+        p = Player(id=player.get('player_id'), last_name=player.get('last_name'), full_name=player.get('full_name'),
+                   position=player.get('position'), team=player.get('team'), age=player.get('age'), height=player.get('height'))
+
+        db.session.add(p)
+        db.session.commit()

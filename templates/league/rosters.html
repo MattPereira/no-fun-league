@@ -9,12 +9,12 @@
 
 <h1 class="text-center my-5 text-white">ALL ROSTERS</h1>
 
-<p>{{players}}</p>
+<p class="text-white"></p>
 
 <div class="row text-center">
 {% for roster in rosters %}
     <div class="col-sm-6 col-md-4">
-        <table class="table table-bordered bg-white">
+        <table class="table bg-white rounded">
             <thead>
                 <tr>
                     <th scope="col">
@@ -28,9 +28,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% for player in roster.players%}
+                {% for id in roster.player_ids%}
                 <tr>
-                   <td>{{player}}</td>
+                   <td>
+                       {{id}}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

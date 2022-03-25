@@ -4,9 +4,55 @@
 
 {% block content %}
 
-<h1 class="text-center my-5 display-5 text-white">Polls</h1>
+<h1 class="text-center display-4 my-5 text-white">The No Fun League Polls</h1>
 
-
+<div class="row justify-content-center">
+    <div class="col-12">
+        {% for proposal in proposals %}
+        <div class="p-5 mb-5 rounded text-center bg-light">
+            <div class="row mb-5">
+                <h3>{{proposal.ammendment}}</h3>
+                <p class="mb-0">proposed by <i>{{proposal.proposed_by.full_name}}</i></p> 
+            </div>
+            <p class="lead mb-5">{{proposal.argument}}</p>
+            <div class="row text-center">
+                <div class="col-6">
+                    <h5>AGREE</h5>
+                </div>
+                <div class="col-6">
+                    <h5>DISAGREE</h5>
+                </div>
+            </div>
+            <div class="row justify-content-around text-dark rounded">
+                <div class="col-5">
+                    <div class="row bg-white p-3 rounded">
+                        {% for vote in proposal.votes %}
+                        {% if vote.agree == True %}
+                            <div class="col-md-3">
+                                <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{vote.user.manager.avatar_id}}" alt="">
+                                <p>{{vote.user.first_name}}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row bg-white p-3 rounded">
+                        {% for vote in proposal.votes %}
+                        {% if vote.agree == False %}
+                        <div class="col-md-3">
+                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{vote.user.manager.avatar_id}}" alt="">
+                            <p>{{vote.user.first_name}}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
 
 
 {% endblock %}

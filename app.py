@@ -1,11 +1,9 @@
 
-from flask import Flask, render_template, redirect, session, flash, jsonify
+from flask import Flask, render_template, redirect, session, flash, jsonify, g
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Player, Roster, Manager, Pick, Post
-from forms import RegisterForm, LoginForm, EditUserForm
+from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Proposal, ProposalVotes
+from forms import RegisterForm, LoginForm, EditUserForm, BlogForm
 
-
-from logic import get_roster
 import requests
 import os
 import json
@@ -29,11 +27,28 @@ connect_db(app)
 toolbar = DebugToolbarExtension(app)
 
 
-@app.route('/')
-def home_page():
-    """redirect to /register"""
+@app.before_request
+def add_user_to_g():
+    """Add current user to Flask global if they are logged in"""
 
-    return render_template('index.html')
+    if 'user_id' in session:
+        g.user = User.query.get(session['user_id'])
+
+    else:
+        g.user = None
+
+
+def do_login(user):
+    """Log in a user"""
+
+    session['user_id'] = user.id
+
+
+def do_logout():
+    """Logout a user."""
+
+    if 'user_id' in session:
+        del session['user_id']
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -92,10 +107,17 @@ def login_user():
 
 @app.route('/logout', methods=["POST"])
 def logout_user():
-    """Handle logout of user using session.pop('username')"""
-    session.pop('user_id')
+    """Handle logout of user"""
+    do_logout()
     flash("You have been logged out!", "info")
     return redirect('/')
+
+
+@app.route('/')
+def home_page():
+    """redirect to /register"""
+
+    return render_template('index.html')
 
 
 @app.route('/users/<user_id>')
@@ -110,7 +132,6 @@ def show_user(user_id):
 @app.route('/users/<user_id>/update', methods=["GET", "POST"])
 def edit_user(user_id):
     """Allow user to edit information about themself"""
-    #### COME BACK TO FIGURE OUT PASSWORD CHANGING ####
 
     user = User.query.get_or_404(user_id)
 
@@ -151,17 +172,26 @@ def show_manager(user_id):
     """Show details about a manager"""
 
     user = User.query.get(user_id)
-    manager = user.manages[0]
+    manager = user.manager
 
     return render_template('league/manager.html', manager=manager)
 
 
 @app.route('/rosters', methods=['GET'])
 def show_rosters():
-
+    """Show all rosters"""
     rosters = Roster.query.all()
 
-    return render_template('league/rosters.html', rosters=rosters)
+    # creates list of all player_ids present on each roster
+    player_ids = []
+    for roster in rosters:
+        for id in roster.player_ids:
+            player_ids.append(id)
+
+    players = Player.query.filter(Player.id.in_(
+        roster.player_ids)).order_by('position').all()
+
+    return render_template('league/rosters.html', rosters=rosters, players=players)
 
 
 @app.route('/rosters/<int:roster_id>')
@@ -171,7 +201,7 @@ def show_roster(roster_id):
     roster = Roster.query.get(roster_id)
 
     players = Player.query.filter(Player.id.in_(
-        roster.players)).order_by('position').all()
+        roster.player_ids)).order_by('position').all()
 
     return render_template('league/roster.html', roster=roster, players=players)
 
@@ -185,6 +215,11 @@ def show_draftboard():
     r4 = Pick.query.filter(Pick.roster_id == 4).order_by('id').all()
     r5 = Pick.query.filter(Pick.roster_id == 5).order_by('id').all()
 
+    # THE BETTER WAY IF TIME
+    # picks = Pick.query.all()
+    # all picks with same roster id go to same array
+    # [ [picks with r_id 1], [picks with r_id 2], [picks with r_id 3]]
+
     return render_template('league/draftboard.html', r1=r1, r2=r2, r3=r3, r4=r4, r5=r5)
 
 
@@ -193,13 +228,28 @@ def show_blog():
     """Show all blog posts by order of most recent"""
     posts = Post.query.order_by(Post.created_at.desc()).all()
 
-    return render_template('league/blog.html', posts=posts)
+    return render_template('league/blog/blog.html', posts=posts)
+
+
+@app.route('/blog/new', methods=["GET", "POST"])
+def add_post():
+    """Show form if GET, handle creating new blog post if POST"""
+
+    if not g.user:
+        flash("Sorry, you must be logged in to create a blog post!", "danger")
+        return redirect('/blog')
+
+    form = BlogForm()
+
+    return render_template('league/blog/new.html', form=form)
 
 
 @app.route('/polls', methods=['GET'])
 def show_polls():
+    """Show all rule proposals and user submitted votes"""
+    proposals = Proposal.query.all()
 
-    return render_template('league/polls.html')
+    return render_template('league/polls.html', proposals=proposals)
 
 
 @app.route('/update_players', methods=["GET"])
@@ -211,11 +261,19 @@ def fetch_players():
 
     players = json.loads(f.read())
 
+    rosters = Roster.query.all()
+
+    all_p_ids = []
+    for roster in rosters:
+        for id in roster.player_ids:
+            all_p_ids.append(id)
+
     for player in players.values():
-        p = Player(id=player.get('player_id'), last_name=player.get('last_name'), full_name=player.get('full_name'),
-                   position=player.get('position'), team=player.get('team'), age=player.get('age'), height=player.get('height'))
+        if player['player_id'] in all_p_ids:
+            p = Player(id=player.get('player_id'), last_name=player.get('last_name'), full_name=player.get('full_name'),
+                       position=player.get('position'), team=player.get('team'), age=player.get('age'), height=player.get('height'))
 
-        db.session.add(p)
-        db.session.commit()
+            db.session.add(p)
+            db.session.commit()
 
-    return players
+    return 'maybe?'

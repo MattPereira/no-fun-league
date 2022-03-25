@@ -8,7 +8,7 @@
     {% if session['user_id'] == manager.user.id %}
     <div class="row justify-content-end mt-3">
         <div class="col-auto">
-            <a href="/users/{{manager.user.id}}/update" class="btn btn-warning">EDIT PROFILE</a>
+            <a href="/users/{{manager.user.id}}/update" class="btn btn-outline-light rounded-pill">EDIT PROFILE</a>
         </div>
     </div>
     {% endif %}
@@ -22,28 +22,30 @@
                 <h1 class="display-5">{{manager.user.first_name}} {{manager.user.last_name}}</h1>
                 <h5 class="text-secondary">Manager of <i>{{manager.team_name}}</i> </h5>
             </div>
-            <div class="row justify-content-between text-center">
-                <div class="col-md-3 mt-3">
-                    <p><b><u>Location</u></b></p>
+            <div class="row justify-content-between text-center my-5">
+                <div class="col-md-3">
+                    <p><b>Location</b></p>
                     {{manager.user.location}}
                 </div>
-                <div class="col-md-3 mt-3">
-                    <p><b><u>Playing FF Since</u></b></p>
+                <div class="col-md-3">
+                    <p><b>Playing FF Since</b></p>
                     {{manager.user.ff_since}}
                 </div>
                 <div class="col-md-3">
-                    <p class="mb-0 mt-3"><b><u>Fav Team</u></b></p>
+                    <p class="mb-0"><b>Favorite Team</b></p>
                     <img class="rounded-circle w-25" src="https://sleepercdn.com/images/team_logos/nfl/{{manager.user.fav_team}}.png" alt="">
                 </div>
+            </div>
+            <div class="row">
                 <div class="my-3">
                     <p class="lead">{{manager.user.bio}}</p>
                 </div>
                 <div class="my-3">
-                    <h6>Team Philosophy</h6>
+                    <h6 class="text-center">Team Philosophy</h6>
                     <p><i>{{manager.user.philosophy}}</i></p>
                 </div>
                 <div>
-                    <a href="/rosters/{{manager.roster[0].id}}" class="btn btn-primary">ROSTER</a>
+                    <a href="/rosters/{{manager.roster.id}}" class="btn btn-primary rounded-pill"><b>ROSTER</b></a>
                 </div>
             </div>
         </div>

@@ -6,10 +6,16 @@
 
 <h1 class="text-center display-5 my-5 text-white">The No Fun League Blog</h1>
 
+<div class="row justify-content-center mb-5">
+    <div class="col-auto">
+        <a href="/blog/new" class="btn btn-primary btn-lg">New Post</a>
+    </div>
+</div>
+
 <div class="row justify-content-center text-white">
     <div class="col-10">
         {% for post in posts %}
-        <div class=" pt-5 px-5 pb-2 bg-secondary border border-white border-2 mb-4 rounded">
+        <div class=" pt-5 px-5 pb-2 bg-secondary border border-white border-1 mb-5 rounded">
             <h5 class="text-center mb-4">{{post.title}}</h5>
             <p>{{post.content}}</p>
             <hr class="bg-white border-5 border-white">

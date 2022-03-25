@@ -5,6 +5,7 @@
 {% block content %}
 <div class="container">
 
+    <p class="text-white">{{roster.player_ids}}</p>
     <div class="row my-5 justify-content-center">
         <div class="col-4">
             <table class="table table-bordered bg-white">
@@ -31,10 +32,10 @@
                             class="badge bg-info"
                             {% endif%}
                             > {{player.position}} </span>
-                            {{player.team}} <b>{{player.full_name}}</b>
+                            {{player.full_name}}
                         </td>
                        {% else %}
-                        <td><span class="badge bg-secondary">DEF</span> {{player.team}} <b>{{player.last_name}}</b>  </td>
+                        <td><span class="badge bg-secondary">DEF</span> {{player.last_name}} </td>
                        {% endif %}
                     </tr>
                     {% endfor %}

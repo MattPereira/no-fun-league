@@ -1,6 +1,7 @@
 from email.policy import default
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from sqlalchemy.orm import backref
 
 import datetime
 
@@ -20,7 +21,7 @@ def connect_db(app):
 class User(db.Model):
     __tablename__ = 'users'
 
-    # user.id must be set to the unique sleeper ID
+    # .id must be set to the unique sleeper ID
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     sleeper_id = db.Column(db.Text, unique=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
@@ -83,7 +84,7 @@ class Manager(db.Model):
     avatar_id = db.Column(db.Text, default='15d7cf259bc30eab8f6120f45f652fb6')
     team_name = db.Column(db.Text)
 
-    user = db.relationship('User', backref="manages")
+    user = db.relationship('User', backref=backref("manager", uselist=False))
 
 
 class Pick(db.Model):
@@ -115,9 +116,10 @@ class Roster(db.Model):
     fpts_against = db.Column(db.Integer)
     streak = db.Column(db.Text)
     record = db.Column(db.Text)
-    players = db.Column(db.PickleType)
+    player_ids = db.Column(db.PickleType)
 
-    manager = db.relationship('Manager', backref="roster")
+    manager = db.relationship(
+        'Manager', backref=backref("roster", uselist=False))
 
 
 class Player(db.Model):
@@ -152,3 +154,30 @@ class Post(db.Model):
         """Return human readable date and time string"""
 
         return self.created_at.strftime("%B %d %Y, %I:%M %p")
+
+
+class Proposal(db.Model):
+
+    __tablename__ = "proposals"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    ammendment = db.Column(db.String(100))
+    argument = db.Column(db.String(1000))
+    created_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.datetime.now())
+
+    proposed_by = db.relationship('User')
+    votes = db.relationship('ProposalVotes')
+
+
+class ProposalVotes(db.Model):
+
+    __tablename__ = "proposal_votes"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    proposal_id = db.Column(db.Integer, db.ForeignKey('proposals.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    agree = db.Column(db.Boolean)
+
+    user = db.relationship('User')

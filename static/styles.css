@@ -1,0 +1,8 @@
+/* BOOTSTRAP WILL OVERRIDE ANY STYLES UNLESS YOU SET UP SASS */
+body {
+  background-color: #1a1917;
+}
+
+#navbar {
+  background-color: #fcba03;
+}

@@ -42,5 +42,8 @@ class EditUserForm(FlaskForm):
     philosophy = TextAreaField("Team Philosophy")
 
 
-class FetchDraftForm(FlaskForm):
-    """leave this blank"""
+class BlogForm(FlaskForm):
+    title = StringField("Title", validators=[
+                        InputRequired(), Length(max=100)])
+    content = TextAreaField("Content", validators=[
+        InputRequired(), Length(max=2500)])
