@@ -4,15 +4,13 @@
 
 {% block content %}
 
-<div class="container">
-
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
             {% for manager in managers %}
             <a href="/managers/{{manager.user.id}}">
-            <div class="row border border-dark rounded-pill mb-3 py-3 bg-secondary text-white">
-                <div class="d-none d-lg-flex col-md-1">
-                    <img class="img-fluid rounded-circle border border-white border-2" src="https://sleepercdn.com/avatars/thumbs/{{manager.avatar_id}}" alt="">
+            <div class="row border border-white rounded-pill mb-3 py-3 text-white managers">
+                <div class="col-md-1">
+                    <img class="img-fluid rounded-circle border border-white border-2 ms-3" src="https://sleepercdn.com/avatars/thumbs/{{manager.avatar_id}}" alt="">
                 </div>
                 <div class="col-auto mt-1">
                     <b>{{manager.user.first_name}} {{manager.user.last_name}}</b>
@@ -28,7 +26,6 @@
             {% endfor %}
         </div>
     </div>
-</div>
 
 
 {% endblock %}

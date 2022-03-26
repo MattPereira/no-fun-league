@@ -4,24 +4,23 @@
 
 {% block content %}
 
-<div class="container">
+<p class="text-white">{{players}}</p>
 
-
-<h1 class="text-center my-5 text-white">ALL ROSTERS</h1>
-
-<p class="text-white"></p>
-
-<div class="row text-center">
+<div class="row text-center my-5">
 {% for roster in rosters %}
     <div class="col-sm-6 col-md-4">
         <table class="table bg-white rounded">
             <thead>
                 <tr>
                     <th scope="col">
-                        <a href="/rosters/{{roster.id}}">
-                        <div>
-                            <img class="img-fluid rounded-circle" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
-                            <div>{{roster.manager.team_name}}</div>
+                        <a href="/rosters/{{roster.id}}"  style="text-decoration:none;" class="text-dark">
+                        <div class="row">
+                            <div class="col-auto">
+                                <img class="img-fluid rounded-circle w-75" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
+                            </div>
+                            <div class="col-auto align-self-center">
+                                {{roster.manager.team_name}}
+                            </div>
                         </div>
                         </a>
                     </th>
@@ -39,7 +38,6 @@
         </table>
     </div>
 {% endfor %}
-</div>
 </div>
 
 {% endblock %}

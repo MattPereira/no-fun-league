@@ -6,3 +6,15 @@ body {
 #navbar {
   background-color: #fcba03;
 }
+
+.dropdown-menu {
+  opacity: 0.95;
+}
+
+.nav-link {
+  font-size: 1.25rem;
+}
+
+.managers {
+  background-color: black;
+}

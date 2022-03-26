@@ -28,9 +28,14 @@ toolbar = DebugToolbarExtension(app)
 
 
 @app.before_request
-def add_user_to_g():
-    """Add current user to Flask global if they are logged in"""
+def add_info_to_g():
+    """Add managers, rosters, and user to Flask global"""
 
+    # allows for dropdown links to display through base.html
+    g.managers = Manager.query.all()
+    g.rosters = Roster.query.all()
+
+    # Add current user to 'g' if they are logged in
     if 'user_id' in session:
         g.user = User.query.get(session['user_id'])
 
@@ -188,8 +193,7 @@ def show_rosters():
         for id in roster.player_ids:
             player_ids.append(id)
 
-    players = Player.query.filter(Player.id.in_(
-        roster.player_ids)).order_by('position').all()
+    players = Player.query.all()
 
     return render_template('league/rosters.html', rosters=rosters, players=players)
 
