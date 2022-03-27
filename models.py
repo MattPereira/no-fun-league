@@ -92,7 +92,7 @@ class Pick(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     roster_id = db.Column(db.Integer)
-    draft_id = db.Column(db.Text)
+    player_id = db.Column(db.Text)
     picked_by = db.Column(db.Text, db.ForeignKey('managers.user_id'))
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)

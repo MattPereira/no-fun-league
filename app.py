@@ -163,15 +163,6 @@ def edit_user(user_id):
     return render_template('users/edit.html', user=user, form=form)
 
 
-@app.route('/managers')
-def show_managers():
-    """Show list of all managers with link to individual pages"""
-
-    managers = Manager.query.all()
-
-    return render_template('league/managers.html', managers=managers)
-
-
 @app.route('/managers/<int:user_id>')
 def show_manager(user_id):
     """Show details about a manager"""
@@ -180,22 +171,6 @@ def show_manager(user_id):
     manager = user.manager
 
     return render_template('league/manager.html', manager=manager)
-
-
-@app.route('/rosters', methods=['GET'])
-def show_rosters():
-    """Show all rosters"""
-    rosters = Roster.query.all()
-
-    # creates list of all player_ids present on each roster
-    player_ids = []
-    for roster in rosters:
-        for id in roster.player_ids:
-            player_ids.append(id)
-
-    players = Player.query.all()
-
-    return render_template('league/rosters.html', rosters=rosters, players=players)
 
 
 @app.route('/rosters/<int:roster_id>')
@@ -213,18 +188,20 @@ def show_roster(roster_id):
 @app.route('/draftboard', methods=["GET", "POST"])
 def show_draftboard():
 
-    r1 = Pick.query.filter(Pick.roster_id == 1).order_by('id').all()
-    r2 = Pick.query.filter(Pick.roster_id == 2).order_by('id').all()
-    r3 = Pick.query.filter(Pick.roster_id == 3).order_by('id').all()
-    r4 = Pick.query.filter(Pick.roster_id == 4).order_by('id').all()
-    r5 = Pick.query.filter(Pick.roster_id == 5).order_by('id').all()
+    t1 = Pick.query.filter(Pick.roster_id == 1).order_by('id').all()
+    t2 = Pick.query.filter(Pick.roster_id == 2).order_by('id').all()
+    t3 = Pick.query.filter(Pick.roster_id == 3).order_by('id').all()
+    t4 = Pick.query.filter(Pick.roster_id == 4).order_by('id').all()
+    t5 = Pick.query.filter(Pick.roster_id == 5).order_by('id').all()
+    t6 = Pick.query.filter(Pick.roster_id == 6).order_by('id').all()
+    t7 = Pick.query.filter(Pick.roster_id == 7).order_by('id').all()
+    t8 = Pick.query.filter(Pick.roster_id == 8).order_by('id').all()
+    t9 = Pick.query.filter(Pick.roster_id == 9).order_by('id').all()
+    t10 = Pick.query.filter(Pick.roster_id == 10).order_by('id').all()
 
-    # THE BETTER WAY IF TIME
-    # picks = Pick.query.all()
-    # all picks with same roster id go to same array
-    # [ [picks with r_id 1], [picks with r_id 2], [picks with r_id 3]]
+    draft_picks = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10]
 
-    return render_template('league/draftboard.html', r1=r1, r2=r2, r3=r3, r4=r4, r5=r5)
+    return render_template('league/draftboard.html', t1=t1, t2=t2, t3=t3, t4=t4, t5=t5, draft=draft_picks)
 
 
 @app.route('/blog', methods=['GET'])
@@ -261,7 +238,15 @@ def add_post():
 def edit_post(post_id):
     """Handle display of edit form and editing a blog post"""
 
+    if not g.user:
+        flash("Sorry, you must be logged in to edit your blog post!", "danger")
+        return redirect('/blog')
+
     post = Post.query.get(post_id)
+
+    if post.user_id != g.user.id:
+        flash("You may only edit your own posts!", "danger")
+        return redirect('/blog')
 
     form = BlogForm(obj=post)
 
@@ -279,6 +264,10 @@ def edit_post(post_id):
 @app.route('/blog/<int:post_id>/delete', methods=["POST"])
 def destroy_post(post_id):
     """Handle deletion of a blog post"""
+
+    if not g.user:
+        flash("Sorry, you must be logged in to delete your blog post!", "danger")
+        return redirect('/blog')
 
     post = Post.query.get(post_id)
 
@@ -299,30 +288,3 @@ def show_polls():
     proposals = Proposal.query.all()
 
     return render_template('league/polls.html', proposals=proposals)
-
-
-@app.route('/update_players', methods=["GET"])
-def fetch_players():
-    """Temporary route to fetch player info. can it be a get if it posts/patches data to local db?"""
-    # players = requests.get("https://api.sleeper.app/v1/players/nfl")
-
-    f = open('players.json', 'r')
-
-    players = json.loads(f.read())
-
-    rosters = Roster.query.all()
-
-    all_p_ids = []
-    for roster in rosters:
-        for id in roster.player_ids:
-            all_p_ids.append(id)
-
-    for player in players.values():
-        if player['player_id'] in all_p_ids:
-            p = Player(id=player.get('player_id'), last_name=player.get('last_name'), full_name=player.get('full_name'),
-                       position=player.get('position'), team=player.get('team'), age=player.get('age'), height=player.get('height'))
-
-            db.session.add(p)
-            db.session.commit()
-
-    return 'maybe?'

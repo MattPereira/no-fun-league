@@ -1,10 +1,19 @@
 /* BOOTSTRAP WILL OVERRIDE ANY STYLES UNLESS YOU SET UP SASS */
 body {
-  background-color: #1a1917;
+  background-color: #333333;
+  /* #1a1917 */
 }
 
 #navbar {
   background-color: #fcba03;
+}
+
+#dropdown {
+  background-color: black;
+}
+
+.dd-link {
+  color: white;
 }
 
 .dropdown-menu {
@@ -17,4 +26,32 @@ body {
 
 .managers {
   background-color: black;
+}
+
+.QB {
+  background-color: #dc3545;
+}
+
+.RB {
+  background-color: #198754;
+}
+
+.WR {
+  background-color: #0d6efd;
+}
+
+.TE {
+  background-color: #6f42c1;
+}
+
+.DEF {
+  background-color: grey;
+}
+
+.player-pic {
+  max-width: 75px;
+}
+
+.roster-name {
+  font-size: 1.5rem;
 }

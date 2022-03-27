@@ -125,14 +125,15 @@ draft_data = requests.get(
     f'https://api.sleeper.app/v1/draft/{DRAFT_ID}/picks').json()
 
 for pick in draft_data:
-    p = Pick(roster_id=pick['roster_id'], draft_id=pick['draft_id'], picked_by=pick['picked_by'],
+    p = Pick(roster_id=pick['roster_id'], player_id=pick['metadata']['player_id'], picked_by=pick['picked_by'],
              first_name=pick['metadata']['first_name'], last_name=pick['metadata']['last_name'], position=pick['metadata']['position'], team=pick['metadata']['team'], amount=pick['metadata']['amount'])
     db.session.add(p)
     db.session.commit()
 
 
 ### ADDS ALL THE PLAYERS WHO HAVE AN ID ON SOME ROSTER TO PLAYER TABLE ####
-
+## ONLY ALLOWED TO CALL PLAYERS REQ ONCE PER DAY ##
+# players = requests.get("https://api.sleeper.app/v1/players/nfl") #
 f = open('players.json', 'r')
 
 players = json.loads(f.read())

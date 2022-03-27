@@ -4,70 +4,26 @@
 
 {% block content %}
 
-
-
 <h1 class="text-center display-5 my-5 text-white">DRAFTBOARD</h1>
 
 <div class="row g-1 justify-content-center text-center mb-5">
-    <div class="col-auto">
-    <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{r1[0].manager.avatar_id}}" alt="">
-    <h5 class="text-white">{{r1[0].manager.display_name}}</h5>
-    {% for pick in r1 %}
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-title">{{pick.first_name[0]}}. {{pick.last_name}}</div>
-                <p class="card-text text-secondary"> {{pick.position}} | {{pick.team}} |  ${{pick.amount}}</p>
+
+    {% for team in draft %}
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-1 mb-3">
+        <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{team[0].manager.avatar_id}}" alt="">
+        <h5 class="text-white">{{team[0].manager.display_name}}</h5>
+
+        {% for pick in team %}
+            <div class="{{pick.position}} py-3 text-white rounded mb-1">
+                <div><b>{{pick.first_name[0]}}. {{pick.last_name[:9]}}</b></div>
+                <div>{{pick.position}} | {{pick.team}} |  ${{pick.amount}}</div>
             </div>
-        </div>
-    {% endfor %}
-    </div>
-    <div class="col-auto">
-    <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{r2[0].manager.avatar_id}}" alt="">
-    <h5 class="text-white">{{r2[0].manager.display_name}}</h5>
-    {% for pick in r2 %}
-    <div class="card mb-1">
-        <div class="card-body">
-            <div class="card-title">{{pick.first_name[0]}}. {{pick.last_name}}</div>
-            <p class="card-text text-secondary"> {{pick.position}} | {{pick.team}} |  ${{pick.amount}}</p>
-        </div>
+        {% endfor %}
+
     </div>
     {% endfor %}
-    </div>
-    <div class="col-auto">
-        <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{r3[0].manager.avatar_id}}" alt="">
-        <h5 class="text-white">{{r3[0].manager.display_name}}</h5>
-        {% for pick in r3 %}
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-title">{{pick.first_name[0]}}. {{pick.last_name}}</div>
-                <p class="card-text text-secondary"> {{pick.position}} | {{pick.team}} |  ${{pick.amount}}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="col-auto">
-        <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{r4[0].manager.avatar_id}}" alt="">
-        <h5 class="text-white">{{r4[0].manager.display_name}}</h5>
-        {% for pick in r4 %}
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-title">{{pick.first_name[0]}}. {{pick.last_name[:8]}}</div>
-                <p class="card-text text-secondary"> {{pick.position}} | {{pick.team}} |  ${{pick.amount}}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="col-auto">
-        <img class="img-fluid rounded-circle w-25" src="https://sleepercdn.com/avatars/thumbs/{{r5[0].manager.avatar_id}}" alt="">
-        <h5 class="text-white">{{r5[0].manager.display_name}}</h5>
-        {% for pick in r5 %}
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-title">{{pick.first_name[0]}}. {{pick.last_name}}</div>
-                <p class="card-text text-secondary"> {{pick.position}} | {{pick.team}} |  ${{pick.amount}}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+
+</div>
 {% endblock %}
 
+<!-- <div><img class="img-fluid w-25" src="https://sleepercdn.com/content/nfl/players/thumb/{{pick.player_id}}.jpg" alt=""></div> -->

@@ -1,50 +1,17 @@
 users
 -
-user_id INTEGER PK
-avatar_id TEXT
-username TEXT
-first_name TEXT
-last_name TEXT
+id TEXT PK
+sleeper_id TEXT
 email TEXT
 password TEXT
+first_name TEXT
+last_name TEXT
+location TEXT
+ff_since TEXT
+team TEXT
+bio TEXT
+philosophy TEXT
 
-
-
-users_comments
--
-id SERIAL PK
-user_id INTEGER FK >- users.user_id
-comment_id INTEGER FK >- comments.id
-
-comments
--
-id SERIAL PK
-text TEXT
-
-users_posts
--
-id SERIAL PK
-user_id INTEGER FK >- users.user_id
-post_id INTEGER FK >- posts.id
-
-posts
--
-id SERIAL PK
-title TEXT
-content TEXT
-
-users_votes
--
-id SERIAL PK
-rule_id INTEGER FK >- rule_proposals.id
-user_id INTEGER FK >- users.user_id
-agree BOOLEAN
-
-rule_proposals
--
-id SERIAL PK
-title TEXT
-description TEXT
 
 players
 -
@@ -57,33 +24,61 @@ age INTEGER
 height STRING
 
 
+
 rosters
 -
-owner_id INTEGER PK FK >- users.user_id
+id INTEGER PK
+owner_id INTEGER FK >- managers.user_id
 wins INTEGER
 losses INTEGER
 total_fpts INTEGER
 total_fpts_against INTEGER
 streak TEXT
 record TEXT
-starters_id INTEGER FK >- starters.id
-
-
-starters
--
-id SERIAL PK
-p1_id INTEGER FK >- players.id
-p2_id INTEGER FK >- players.id
-p3_id INTEGER FK >- players.id
-p4_id INTEGER FK >- players.id
-p5_id INTEGER FK >- players.id
-p6_id INTEGER FK >- players.id
-p7_id INTEGER FK >- players.id
-p8_id INTEGER FK >- players.id
-p9_id INTEGER FK >- players.id
-p10_id INTEGER FK >- players.id
+player_ids PICKLETYPE FK >- players.id
 
 picks
 -
 id SERIAL PK
-user_id STRING
+picked_by TEXT FK >- managers.user_id
+roster_id INTEGER
+draft_id TEXT
+first_name STRING
+last_name STRING
+position STRING
+team STRING
+amount STRING
+
+
+managers
+-
+id SERIAL PK
+user_id TEXT FK >- users.sleeper_id
+display_name TEXT
+avatar_id TEXT
+team_name TEXT
+
+
+post
+-
+id SERIAL PK
+user_id INTEGER FK >- users.id
+title STRING
+content STRING
+created_at DATETIME
+
+
+proposal_votes
+-
+id SERIAL PK
+proposal_id INTEGER FK >- proposal.id
+user_id INTEGER FK >- users.id
+agree BOOLEAN
+
+proposal
+-
+id SERIAL PK
+user_id INTEGER FK >- users.id
+ammendment TEXT
+argument TEXT
+created_at DATETIME
