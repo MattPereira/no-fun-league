@@ -21,9 +21,9 @@ def connect_db(app):
 class User(db.Model):
     __tablename__ = 'users'
 
-    # .id must be set to the unique sleeper ID
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    sleeper_id = db.Column(db.Text, unique=True, nullable=False)
+    sleeper_id = db.Column(db.Text, db.ForeignKey(
+        'managers.sleeper_id'), unique=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     location = db.Column(db.String(25), default="mom's basement")
@@ -34,6 +34,9 @@ class User(db.Model):
         db.String(250), default='A procrastinator’s work is never done.')
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
+
+    manager = db.relationship(
+        'Manager', backref=backref("user", uselist=False))
 
     def __repr__(self):
         u = self
@@ -78,13 +81,10 @@ class Manager(db.Model):
     __tablename__ = 'managers'
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Text, db.ForeignKey(
-        'users.sleeper_id'), unique=True, nullable=False)
+    sleeper_id = db.Column(db.Text, unique=True)
     display_name = db.Column(db.Text)
     avatar_id = db.Column(db.Text, default='15d7cf259bc30eab8f6120f45f652fb6')
     team_name = db.Column(db.Text)
-
-    user = db.relationship('User', backref=backref("manager", uselist=False))
 
 
 class Pick(db.Model):
@@ -93,7 +93,7 @@ class Pick(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     roster_id = db.Column(db.Integer)
     player_id = db.Column(db.Text)
-    picked_by = db.Column(db.Text, db.ForeignKey('managers.user_id'))
+    picked_by = db.Column(db.Text, db.ForeignKey('managers.sleeper_id'))
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     position = db.Column(db.String)
@@ -108,7 +108,7 @@ class Roster(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     owner_id = db.Column(db.Text, db.ForeignKey(
-        'managers.user_id'), unique=True)
+        'managers.sleeper_id'), unique=True)
     wins = db.Column(db.Integer)
     losses = db.Column(db.Integer)
     ppts = db.Column(db.Integer)
@@ -140,7 +140,9 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(100))
-    content = db.Column(db.String(2500))
+    para_1 = db.Column(db.String(750), nullable=False)
+    para_2 = db.Column(db.String(750))
+    para_3 = db.Column(db.String(750))
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.datetime.now())
 
@@ -162,7 +164,7 @@ class Proposal(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    ammendment = db.Column(db.String(100))
+    ammendment = db.Column(db.String(100), nullable=False)
     argument = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.datetime.now())

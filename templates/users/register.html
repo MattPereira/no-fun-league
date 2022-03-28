@@ -4,17 +4,24 @@
 
 {% block content %}
 
-<h1 class="display-3 text-center mb-3">Register</h1>
+<h1 class="display-3 text-center mb-3 text-white">Register</h1>
 
 <form method="POST" action="/register">
 
   {{ form.hidden_tag() }}
 
-<div class="row justify-content-center">
+<div class="row justify-content-center text-white">
   <div class="col-md-6 mb-3">
+
   {% for field in form if field.widget.input_type != 'hidden' %}
-    {{ field.label }}
-    {{ field(class_="form-control mb-3") }}
+    {{ field.label(class_="form-label") }}
+    {% if field.type == "SelectField"%}
+      {{field(class_="form-select mb-3")}}
+    {% else%}
+    
+      {{ field(class_="form-control mb-3") }}
+
+    {% endif %}
 
     {% for error in field.errors %}
     <span class="form-text text-danger">{{ error }}</span>

@@ -11,10 +11,11 @@
   </head>
 <body>
 
+
 <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
   <div class="container-fluid">
    <a class="navbar-brand text-center" href="/">
-    <img src="https://cdn.shopify.com/s/files/1/0884/9106/products/CH-0158-Zoom_200x_crop_center.jpg?v=1629836776" class="img-fluid rounded-circle w-25" alt="">
+    <img src="/static/no_fun_league.png" class="logo ms-3 border border-secondary border-3 rounded-circle" alt="">
    </a>
    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
        <span class="navbar-toggler-icon"></span>
@@ -25,7 +26,9 @@
         <a class="nav-link text-dark" href="/managers" id="navbarDropdown" role="button" data-bs-toggle="dropdown"><i class="fa-solid fa-users me-2"> </i>Managers</a> 
         <ul class="dropdown-menu border border-1 border-white" id="dropdown">
           {% for manager in g.managers%}
-            <li><a class="dropdown-item dd-link" href="/managers/{{manager.user.id}}">{{manager.user.full_name}}</a></li>
+            {% if manager.user %}
+            <li><a class="dropdown-item dd-link" href="/managers/{{manager.user.id}}">{{manager.display_name}}</a></li>
+            {% endif %}
           {% endfor %}
         </ul>
       </li>
@@ -37,7 +40,7 @@
           {% endfor %}
         </ul>
       </li>
-     <li class="nav-item"><a class="nav-link text-dark" href="/draftboard"><i class="fa-solid fa-table-cells"></i> Draftboards </a></li>
+     <li class="nav-item"><a class="nav-link text-dark" href="/draftboard"><i class="fa-solid fa-table-cells"></i> Drafts </a></li>
      <li class="nav-item"><a class="nav-link text-dark" href="/blog"><i class="fa-brands fa-blogger"></i> Blog </a></li>
      <li class="nav-item"><a class="nav-link text-dark" href="/polls"><i class="fa-solid fa-square-poll-vertical"></i> Polls </a></li>
    </ul>
@@ -48,7 +51,8 @@
       <button type="submit" class="btn btn-outline-dark rounded-pill border border-3 border-dark me-5"><b>Logout</b></button>
     </form>
     {% else %}
-    <a class="btn btn-outline-dark border border-2 border-dark rounded-pill me-5" href="/login"><b>Login</b></a>
+    <a href="/login" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Login</b></a>
+    <a href="/register" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Register</b></a>
     {% endif %}
    </ul>
    </div> <!-- navbar-collapse.// -->

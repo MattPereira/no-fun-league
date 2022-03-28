@@ -1,34 +1,49 @@
 {% extends 'base.html'  %}
 
-{% block title %}Edit User{% endblock%}
+{% block title %}Edit User Profile{% endblock%}
 
 {% block content %}
 
-<h1 class="display-3 text-center mb-3">Edit User Details</h1>
+<div class="container">
+  <h1 class="display-3 text-center mb-3 text-white">Edit Profile</h1>
 
-<form method="POST" action="/users/{{user.id}}/update" class="text-white">
+  <form method="POST" action="/users/{{user.id}}/update" class="text-white">
+  
+    {{ form.hidden_tag() }}
 
-  {{ form.hidden_tag() }}
-
-<div class="row justify-content-center">
-  <div class="col-md-6 mb-3">
-  {% for field in form if field.widget.input_type != 'hidden' %}
-    {{ field.label }}
-    {{ field(class_="form-control mb-3") }}
-
-    {% for error in field.errors %}
-    <span class="form-text text-danger">{{ error }}</span>
-    {% endfor %}
-
-  {% endfor %}
-</div>
-</div>
-
-<div class="row justify-content-center">
-  <div class="col-md-6 d-flex justify-content-end">
-    <button class="btn btn-success" type="submit">Update</button>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="row justify-content-center">
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        <div class="col-md-6 mb-3">
+          {{ field.label(class_="form-label") }}
+    
+            {% for error in field.errors %}
+            <span class="form-text text-danger">{{ error }}</span>
+            {% endfor %}
+      
+            {% if field.type == "SelectField"%}
+            {{field(class_="form-select")}}
+            {% else%}
+            {{ field(class_="form-control") }}
+            {% endif %}
+      
+          </div>
+        {% endfor %}
+  
+        <div class="row justify-content-end">
+          <div class="col-auto">
+            <button class="btn btn-success" type="submit"><b>UPDATE</b></button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  
+
+  
+  </form>
 </div>
 
-</form>
+
 {% endblock %}

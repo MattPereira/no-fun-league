@@ -7,18 +7,18 @@
 
   <div class="text-center my-3 text-white">
     <h1 class="display-1">Login</h1>
-    <p class="lead">Don't have an account yet? <a href="/register">Register</a></p>
+    <p class="lead">Don't have an account yet? <a href="/register" class="link-light">Register</a></p>
   </div>
 
   <div class="row justify-content-center text-white">
-    <div class="col-md-8">
+    <div class="col-md-8 col-lg-6">
       <form method="POST" action="/login">
 
         {{ form.hidden_tag() }}
       
         {% for field in form if field.widget.input_type != 'hidden' %}
         <p>
-          {{ field.label }}
+          {{ field.label(class_="form-label") }}
           {{ field(class_="form-control") }}
       
           {% for error in field.errors %}
@@ -26,8 +26,13 @@
           {% endfor %}
         </p>
         {% endfor %}
+
+        <div class="row justify-content-end">
+          <div class="col-auto">
+            <button class="btn btn-success" type="submit">LOGIN</button>
+          </div>
+        </div>
       
-        <button class="btn btn-success" type="submit">Login</button>
       
       </form>
     </div>

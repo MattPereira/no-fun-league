@@ -1,8 +1,8 @@
 
-from flask import Flask, render_template, redirect, session, flash, jsonify, g
+from flask import Flask, render_template, redirect, session, flash, jsonify, g, request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Proposal, ProposalVotes
-from forms import RegisterForm, LoginForm, EditUserForm, BlogForm
+from forms import RegisterForm, LoginForm, EditUserForm, BlogPostForm, ProposalForm
 
 import requests
 import os
@@ -65,22 +65,33 @@ def register_user():
 
     form = RegisterForm()
 
+    # figure out which users have already registered and remove them from choices
+    users = User.query.all()
+    registered = [u.manager.id for u in users]
+
+    unregistered = Manager.query.filter(Manager.id.notin_(registered))
+
+    sleeper_accounts = [(m.sleeper_id, m.display_name)
+                        for m in unregistered]
+
+    form.sleeper_id.choices = sleeper_accounts
+
     if form.validate_on_submit():
-        user_id = form.user_id.data
+        sleeper_id = form.sleeper_id.data
         first_name = form.first_name.data
         last_name = form.last_name.data
         password = form.password.data
         email = form.email.data
 
         new_user = User.register(
-            user_id, first_name, last_name, password, email)
+            sleeper_id, first_name, last_name, email, password)
         db.session.add(new_user)
 
         db.session.commit()
 
         session['user_id'] = new_user.id
         flash('Welcome to the No Fun League! Please edit your profile!', "success")
-        return redirect(f'/managers/{new_user.manager.id}')
+        return redirect(f'/managers/{new_user.id}')
 
     return render_template('users/register.html', form=form)
 
@@ -168,9 +179,11 @@ def show_manager(user_id):
     """Show details about a manager"""
 
     user = User.query.get(user_id)
-    manager = user.manager
 
-    return render_template('league/manager.html', manager=manager)
+    if user != None:
+        return render_template('league/manager.html', user=user)
+
+    return render_template('/league/nomanager.html')
 
 
 @app.route('/rosters/<int:roster_id>')
@@ -209,7 +222,7 @@ def show_blog():
     """Show all blog posts by order of most recent"""
     posts = Post.query.order_by(Post.created_at.desc()).all()
 
-    return render_template('league/blog/blog.html', posts=posts)
+    return render_template('league/blog/show.html', posts=posts)
 
 
 @app.route('/blog/new', methods=["GET", "POST"])
@@ -220,11 +233,11 @@ def add_post():
         flash("Sorry, you must be logged in to create a blog post!", "danger")
         return redirect('/blog')
 
-    form = BlogForm()
+    form = BlogPostForm()
 
     if form.validate_on_submit():
         post = Post(user_id=g.user.id, title=form.title.data,
-                    content=form.content.data)
+                    para_1=form.para_1.data, para_2=form.para_2.data, para_3=form.para_3.data)
         db.session.add(post)
         db.session.commit()
 
@@ -248,11 +261,13 @@ def edit_post(post_id):
         flash("You may only edit your own posts!", "danger")
         return redirect('/blog')
 
-    form = BlogForm(obj=post)
+    form = BlogPostForm(obj=post)
 
     if form.validate_on_submit():
         post.title = form.title.data
-        post.content = form.content.data
+        post.para_1 = form.para_1.data
+        post.para_2 = form.para_2.data
+        post.para_3 = form.para_3.data
         db.session.commit()
 
         flash("You have successfully edited your post!", "success")
@@ -285,6 +300,58 @@ def destroy_post(post_id):
 @app.route('/polls', methods=['GET'])
 def show_polls():
     """Show all rule proposals and user submitted votes"""
+
     proposals = Proposal.query.all()
 
-    return render_template('league/polls.html', proposals=proposals)
+    return render_template('league/polls/show.html', proposals=proposals)
+
+
+@app.route('/polls/new', methods=["GET", "POST"])
+def add_proposal():
+    """Show form if GET, create new proposal if POST"""
+
+    if not g.user:
+        flash("Sorry, you must be logged in to add a rule proposal!", "danger")
+        return redirect('/polls')
+
+    form = ProposalForm()
+
+    if form.validate_on_submit():
+        proposal = Proposal(
+            user_id=g.user.id, ammendment=form.ammendment.data, argument=form.argument.data)
+
+        db.session.add(proposal)
+        db.session.commit()
+        flash(f"Successfully added your proposal!", "success")
+        return redirect('/polls')
+
+    return render_template('/league/polls/new.html', form=form)
+
+
+@app.route('/polls/vote', methods=['POST'])
+def handle_user_vote():
+    """Handle the user's vote on a proposal"""
+
+    if not g.user:
+        flash("Sorry, you must be logged in to submit your vote!", "danger")
+        return redirect('/polls')
+
+    prop_id = request.form['prop-id']
+    # turn string from request.form into a boolean
+    decision = ("True" == request.form['decision'])
+
+    proposal = Proposal.query.get(prop_id)
+
+    # ids of users who have already voted on a particular proposition
+    voted_users = [vote.user_id for vote in proposal.votes]
+
+    if g.user.id in voted_users:
+        flash("Sorry, you may only vote once per proposal!", "warning")
+        return redirect('/polls')
+    else:
+        vote = ProposalVotes(proposal_id=prop_id,
+                             user_id=g.user.id, agree=decision)
+        db.session.add(vote)
+        db.session.commit()
+        flash("Thank you for voting!", "success")
+        return redirect('/polls')

@@ -12,6 +12,17 @@ DRAFT_ID = 723677560327737344
 db.drop_all()
 db.create_all()
 
+
+# ADDS ALL THE MANAGERS INFO
+managers_info = requests.get(
+    f"https://api.sleeper.app/v1/league/{LEAGUE_ID}/users").json()
+
+for manager in managers_info:
+    m = Manager(sleeper_id=manager['user_id'], display_name=manager['display_name'],
+                avatar_id=manager['avatar'], team_name=manager['metadata']['team_name'])
+    db.session.add(m)
+    db.session.commit()
+
 # # Input all the users. Special attention to provide correct user_id
 matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
                      last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
@@ -25,76 +36,55 @@ jake = User.register(sleeper_id='723670786174451712', first_name='Jake',
 lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
                       last_name='Hall', email="cHall@gmail.com", password='eclipse21')
 
-mikey = User.register(sleeper_id='725910594263265280', first_name='Mikey',
-                      last_name='unknown', email="mikey@gmail.com", password='eclipse21')
+# mikey = User.register(sleeper_id='725910594263265280', first_name='Mikey',
+#                       last_name='unknown', email="mikey@gmail.com", password='eclipse21')
 
-michael = User.register(sleeper_id='723694715693821952', first_name='Michael',
-                        last_name='Meyer', email="mmeyer@gmail.com", password='eclipse21')
+# michael = User.register(sleeper_id='723694715693821952', first_name='Michael',
+#                         last_name='Meyer', email="mmeyer@gmail.com", password='eclipse21')
 
-chris = User.register(sleeper_id='725808119531286528', first_name='Chris',
-                      last_name='Thomas', email="cThomas@gmail.com", password='eclipse21')
+# chris = User.register(sleeper_id='725808119531286528', first_name='Chris',
+#                       last_name='Thomas', email="cThomas@gmail.com", password='eclipse21')
 
-kaelin = User.register(sleeper_id='469946665449549824', first_name='Kaelin',
-                       last_name='Ragan', email="kRagan@gmail.com", password='eclipse21')
+# kaelin = User.register(sleeper_id='469946665449549824', first_name='Kaelin',
+#                        last_name='Ragan', email="kRagan@gmail.com", password='eclipse21')
 
-brett = User.register(sleeper_id='725777513267126272', first_name='Brett',
-                      last_name='Psomething', email="brettP@gmail.com", password='eclipse21')
+# brett = User.register(sleeper_id='725777513267126272', first_name='Brett',
+#                       last_name='Psomething', email="brettP@gmail.com", password='eclipse21')
 
-grant = User.register(sleeper_id='469964078912106496', first_name='Grant',
-                      last_name='idk', email="grant@gmail.com", password='eclipse21')
+# grant = User.register(sleeper_id='469964078912106496', first_name='Grant',
+#                       last_name='idk', email="grant@gmail.com", password='eclipse21')
 
 
-db.session.add_all([matt, brad, lemon, jake, mikey,
-                   michael, chris, kaelin, brett, grant])
-db.session.commit()
-
-###### Add some posts for testing ########
-post1 = Post(user_id=1, title="Welcome to the managers", content="Greetings No Fun League managers! Welcome to our new site. Initially, I am hoping we will be able to use this site to manage our voting process for new rule proposals. Eventually, many useful features may be added since a few of our league managers are/ will eventually become professional software engineers. Thanks.")
-
-post2 = Post(user_id=2, title="Test post from another user",
-             content="We are testing posting functionality here")
-db.session.add_all([post1, post2])
+db.session.add_all([matt, brad, lemon, jake])
 db.session.commit()
 
 
 ######## Add some rule proposals for testing ############
-prop1 = Proposal(user_id=4, ammendment="Reinstate kickers as a real fantasy position",
-                 argument="Kickers are fantasy player too. They should not be discrimated against. They should be celebrated!")
+# prop1 = Proposal(user_id=4, ammendment="Reinstate kickers as a real fantasy position",
+#                  argument="Kickers are fantasy player too. They should not be discrimated against. They should be celebrated!")
 
-prop2 = Proposal(user_id=2, ammendment="Change QB2 starting roster position to a super flex instead",
-                 argument="This rule change will allow for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels bad when you dont have a second QB to start on your roster. ")
-db.session.add_all([prop1, prop2])
-db.session.commit()
+# prop2 = Proposal(user_id=2, ammendment="Change QB2 starting roster position to a super flex instead",
+#                  argument="This rule change will allow for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels bad when you dont have a second QB to start on your roster. ")
+# db.session.add_all([prop1, prop2])
+# db.session.commit()
 
 
 ########## Add some votes on the propposals ##############
-v1 = ProposalVotes(proposal_id=1, user_id=1, agree=True)
-v2 = ProposalVotes(proposal_id=1, user_id=2, agree=True)
-v3 = ProposalVotes(proposal_id=1, user_id=3, agree=True)
-v4 = ProposalVotes(proposal_id=1, user_id=4, agree=True)
-v5 = ProposalVotes(proposal_id=1, user_id=5, agree=False)
-v6 = ProposalVotes(proposal_id=1, user_id=6, agree=False)
-v7 = ProposalVotes(proposal_id=2, user_id=1, agree=False)
-v8 = ProposalVotes(proposal_id=2, user_id=2, agree=False)
-v9 = ProposalVotes(proposal_id=2, user_id=3, agree=False)
-v10 = ProposalVotes(proposal_id=2, user_id=4, agree=True)
-v11 = ProposalVotes(proposal_id=1, user_id=7, agree=True)
-v12 = ProposalVotes(proposal_id=1, user_id=8, agree=True)
-v13 = ProposalVotes(proposal_id=1, user_id=9, agree=True)
-
-
-db.session.add_all([v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13])
-db.session.commit()
-
-# ADDS ALL THE MANAGERS INFO
-managers_info = requests.get(
-    f"https://api.sleeper.app/v1/league/{LEAGUE_ID}/users").json()
-
-for manager in managers_info:
-    m = Manager(user_id=manager['user_id'], display_name=manager['display_name'],
-                avatar_id=manager['avatar'], team_name=manager['metadata']['team_name'])
-    db.session.add(m)
-    db.session.commit()
+# v1 = ProposalVotes(proposal_id=1, user_id=1, agree=True)
+# v2 = ProposalVotes(proposal_id=1, user_id=2, agree=True)
+# v3 = ProposalVotes(proposal_id=1, user_id=3, agree=True)
+# v4 = ProposalVotes(proposal_id=1, user_id=4, agree=True)
+# v5 = ProposalVotes(proposal_id=1, user_id=5, agree=False)
+# v6 = ProposalVotes(proposal_id=1, user_id=6, agree=False)
+# v7 = ProposalVotes(proposal_id=2, user_id=1, agree=False)
+# v8 = ProposalVotes(proposal_id=2, user_id=2, agree=False)
+# v9 = ProposalVotes(proposal_id=2, user_id=3, agree=False)
+# v10 = ProposalVotes(proposal_id=2, user_id=4, agree=True)
+# v11 = ProposalVotes(proposal_id=1, user_id=7, agree=True)
+# v12 = ProposalVotes(proposal_id=1, user_id=8, agree=True)
+# v13 = ProposalVotes(proposal_id=1, user_id=9, agree=True)
+# db.session.add_all([v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13])
+# db.session.commit()
 
 
 # ADDS ALL THE ROSTERS DATA FOR LEAGUE

@@ -55,3 +55,19 @@ body {
 .roster-name {
   font-size: 1.5rem;
 }
+
+.proposals {
+  background-color: #0e1111;
+}
+
+.posts {
+  background-color: #0e1111;
+}
+
+.logo {
+  max-width: 50px;
+}
+
+p.indent {
+  text-indent: 50px;
+}
