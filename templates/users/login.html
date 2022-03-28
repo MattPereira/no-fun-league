@@ -5,20 +5,19 @@
 {% block content %}
 <div class="container">
 
-  <div class="text-center my-3 text-white">
-    <h1 class="display-1">Login</h1>
-    <p class="lead">Don't have an account yet? <a href="/register" class="link-light">Register</a></p>
-  </div>
 
-  <div class="row justify-content-center text-white">
-    <div class="col-md-8 col-lg-6">
+  <div class="row justify-content-center text-white my-5">
+    <div class="col-10 col-md-8 col-lg-6 p-5 rounded bgDark">
+    <h1 class="display-1 text-center">Login</h1>
+    <p class="lead text-center">Don't have an account yet? <a href="/register" class="link-light">Register</a></p>
+
       <form method="POST" action="/login">
 
         {{ form.hidden_tag() }}
       
         {% for field in form if field.widget.input_type != 'hidden' %}
         <p>
-          {{ field.label(class_="form-label") }}
+          <b>{{ field.label(class_="form-label") }}</b>
           {{ field(class_="form-control") }}
       
           {% for error in field.errors %}
@@ -29,7 +28,7 @@
 
         <div class="row justify-content-end">
           <div class="col-auto">
-            <button class="btn btn-success" type="submit">LOGIN</button>
+            <button class="btn btn-primary mt-3" type="submit"><b>LOGIN</b></button>
           </div>
         </div>
       

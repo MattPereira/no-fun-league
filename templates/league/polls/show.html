@@ -32,14 +32,14 @@
                         <form action="/polls/vote" method="POST">
                             <input type="hidden" name="prop-id" value="{{proposal.id}}">
                             <input type="hidden" name="decision" value="{{True}}">
-                            <button type="submit" class="btn btn-primary rounded-pill"><b>AGREE</b></button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5"><b>AGREE</b></button>
                         </form>
                     </div>
                     <div class="col-6">
                         <form action="/polls/vote" method="POST">
                             <input type="hidden" name="prop-id" value="{{proposal.id}}">
                             <input type="hidden" name="decision" value="{{False}}">
-                            <button type="submit" class="btn btn-danger rounded-pill"><b>DISAGREE</b></button>
+                            <button type="submit" class="btn btn-danger rounded-pill px-5"><b>DISAGREE</b></button>
                         </form>
                     </div>
                 </div>

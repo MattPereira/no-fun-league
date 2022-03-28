@@ -20,9 +20,10 @@
             <div class="d-flex justify-content-center">
                 <img class="img-fluid rounded-circle border border-white border-3 w-25" src="https://sleepercdn.com/avatars/{{user.manager.avatar_id}}" alt="">
             </div>
-            <div class="text-center my-5">
-                <h1 class="display-5">{{user.first_name}} {{user.last_name}}</h1>
+            <div class="text-center mb-5 mt-3">
+                <h1 class="display-5 mb-0">{{user.first_name}} {{user.last_name}}</h1>
                 <h5 class="text-secondary">Manager of <i>{{user.manager.team_name}}</i> </h5>
+                <h6 class="text-light">{{user.location}}</h6>
             </div>
             <div class="row">
                 <div class="my-3">
@@ -49,6 +50,12 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
+            <div class="row justify-content-center">
+                <p class="mb-3"><b>Favorite Team</b></p>
+                <img class="teamIcon" src="https://sleepercdn.com/images/team_logos/nfl/{{user.fav_team}}.png" alt="">
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
             <p><b>Favorite Player</b></p>
             <div class="row d-flex justify-content-center">
                 <img src="https://sleepercdn.com/content/nfl/players/thumb/{{user.fav_player}}.jpg" class="playerIcon" alt="">
@@ -60,12 +67,6 @@
                 <span class="text-white infoIcon tradeDesire">
                     <b>{{user.trade_desire}}</b>
                 </span>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="row justify-content-center">
-                <p class="mb-3"><b>Favorite Team</b></p>
-                <img class="infoIcon" src="https://sleepercdn.com/images/team_logos/nfl/{{user.fav_team}}.png" alt="">
             </div>
         </div>
     </div>

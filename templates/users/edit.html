@@ -12,11 +12,11 @@
     {{ form.hidden_tag() }}
 
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-8 bg-black p-5 rounded">
       <div class="row justify-content-center">
         {% for field in form if field.widget.input_type != 'hidden' %}
         <div class="col-md-6 mb-3">
-          {{ field.label(class_="form-label") }}
+          <b>{{ field.label(class_="form-label") }}</b>
     
             {% for error in field.errors %}
             <span class="form-text text-danger">{{ error }}</span>
@@ -33,7 +33,7 @@
   
         <div class="row justify-content-end">
           <div class="col-auto">
-            <button class="btn btn-success" type="submit"><b>UPDATE</b></button>
+            <button class="btn btn-primary" type="submit"><b>SAVE</b></button>
           </div>
         </div>
       </div>

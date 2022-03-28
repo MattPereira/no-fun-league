@@ -5,9 +5,8 @@ from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Pr
 from forms import RegisterForm, LoginForm, EditUserForm, BlogPostForm, ProposalForm
 from sleeper import update_picks, update_managers, update_rosters, update_players
 
-import requests
 import os
-import json
+
 
 app = Flask(__name__)
 
@@ -33,6 +32,7 @@ def add_info_to_g():
     """Add managers, rosters, and user to Flask global"""
 
     # allows for dropdown links to display through base.html
+
     g.managers = Manager.query.all()
     g.rosters = Roster.query.all()
 
@@ -165,6 +165,7 @@ def edit_user(user_id):
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.email = form.email.data
+        user.location = form.location.data
         user.bio = form.bio.data
         user.philosophy = form.philosophy.data
         user.fav_team = form.fav_team.data
