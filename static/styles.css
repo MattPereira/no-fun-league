@@ -44,6 +44,10 @@ body {
   background-color: #6f42c1;
 }
 
+.K {
+  background-color: teal;
+}
+
 .DEF {
   background-color: grey;
 }
@@ -62,6 +66,30 @@ body {
 
 .posts {
   background-color: #0e1111;
+}
+
+.user-info {
+  background-color: #0e1111;
+}
+
+.infoIcon {
+  height: 75px;
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  font-size: 1.5rem;
+}
+
+.playerIcon {
+  max-height: 125px;
+  max-width: 125px;
+  border-radius: 100%;
+}
+
+.tradeDesire {
+  background-color: teal;
 }
 
 .logo {

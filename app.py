@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, session, flash, jsonify, g, 
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Proposal, ProposalVotes
 from forms import RegisterForm, LoginForm, EditUserForm, BlogPostForm, ProposalForm
+from sleeper import update_picks, update_managers, update_rosters, update_players
 
 import requests
 import os
@@ -131,7 +132,11 @@ def logout_user():
 
 @app.route('/')
 def home_page():
-    """redirect to /register"""
+    """Display No Fun League home page"""
+
+    ## grab/update all the necessary data for app when user requests homepage ##
+    update_managers()
+    update_rosters()
 
     return render_template('index.html')
 
@@ -160,11 +165,12 @@ def edit_user(user_id):
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.email = form.email.data
-        user.location = form.location.data
-        user.ff_since = form.ff_since.data
-        user.fav_team = form.fav_team.data
         user.bio = form.bio.data
         user.philosophy = form.philosophy.data
+        user.fav_team = form.fav_team.data
+        user.fav_position = form.fav_position.data
+        user.fav_player = form.fav_player.data
+        user.trade_desire = form.trade_desire.data
 
         db.session.commit()
         flash(
@@ -200,6 +206,8 @@ def show_roster(roster_id):
 
 @app.route('/draftboard', methods=["GET", "POST"])
 def show_draftboard():
+
+    update_picks()
 
     t1 = Pick.query.filter(Pick.roster_id == 1).order_by('id').all()
     t2 = Pick.query.filter(Pick.roster_id == 2).order_by('id').all()
@@ -355,3 +363,13 @@ def handle_user_vote():
         db.session.commit()
         flash("Thank you for voting!", "success")
         return redirect('/polls')
+
+
+@app.route('/update_players')
+def secret_player_call():
+    """Secret player call to update players only allowed once per day"""
+
+    update_players()
+
+    flash('Player data has been updated. Remember only allowed once per day', 'success')
+    return redirect('/')

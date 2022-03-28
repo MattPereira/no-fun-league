@@ -4,54 +4,71 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container fluid">
     {% if session['user_id'] == user.id %}
-    <div class="row justify-content-end mt-3">
+    <div class="row justify-content-between mt-5">
         <div class="col-auto">
-            <a href="/users/{{user.id}}/update" class="btn btn-warning border border-2 border-warning rounded-pill"><b>EDIT PROFILE</b></a>
+            <a href="/rosters/{{user.manager.roster.id}}" class="btn btn-primary rounded-pill"><b>MY ROSTER</b></a>
+        </div>
+        <div class="col-auto">
+            <a href="/users/{{user.id}}/update" class="btn btn-danger rounded-pill"><b>EDIT PROFILE</b></a>
         </div>
     </div>
     {% endif %}
-
-    <div class="row justify-content-center mt-5 text-white">
+    <div class="row justify-content-center my-5 text-white text-center">
         <div class="col-md-10">
             <div class="d-flex justify-content-center">
                 <img class="img-fluid rounded-circle border border-white border-3 w-25" src="https://sleepercdn.com/avatars/{{user.manager.avatar_id}}" alt="">
             </div>
-            <div class="text-center my-3">
+            <div class="text-center my-5">
                 <h1 class="display-5">{{user.first_name}} {{user.last_name}}</h1>
                 <h5 class="text-secondary">Manager of <i>{{user.manager.team_name}}</i> </h5>
-            </div>
-            <div class="row justify-content-between text-center my-5">
-                <div class="col-md-3">
-                    <p><b>Location</b></p>
-                    {{user.location}}
-                </div>
-                <div class="col-md-3">
-                    <p><b>Playing FF Since</b></p>
-                    {{user.ff_since}}
-                </div>
-                <div class="col-md-3">
-                    <p class="mb-0"><b>Favorite Team</b></p>
-                    <img class="rounded-circle w-25" src="https://sleepercdn.com/images/team_logos/nfl/{{user.fav_team}}.png" alt="">
-                </div>
             </div>
             <div class="row">
                 <div class="my-3">
                     <p class="lead">{{user.bio}}</p>
                 </div>
                 <div class="my-3">
-                    <h6 class="text-center">Team Philosophy</h6>
+                    <h5 class="text-center">Team Philosophy</h5>
                     <p><i>{{user.philosophy}}</i></p>
                 </div>
-                <div>
-                    <a href="/rosters/{{user.manager.roster.id}}" class="btn btn-primary rounded-pill"><b>ROSTER</b></a>
-                </div>
+
             </div>
         </div>
     </div>
+</div>
 
-
+<div class="text-warning pt-3 pb-2 user-info">
+    <div class="row justify-content-between text-center my-5">
+        <div class="col-md-3 mb-3">
+            <p><b>Favorite Position</b></p>
+            <div class="row justify-content-center">
+                <div class="text-white {{user.fav_position}} infoIcon">
+                    <b>{{user.fav_position}}</b> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <p><b>Favorite Player</b></p>
+            <div class="row d-flex justify-content-center">
+                <img src="https://sleepercdn.com/content/nfl/players/thumb/{{user.fav_player}}.jpg" class="playerIcon" alt="">
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <p><b>Trade Desire</b></p>
+            <div class="row justify-content-center">
+                <span class="text-white infoIcon tradeDesire">
+                    <b>{{user.trade_desire}}</b>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="row justify-content-center">
+                <p class="mb-3"><b>Favorite Team</b></p>
+                <img class="infoIcon" src="https://sleepercdn.com/images/team_logos/nfl/{{user.fav_team}}.png" alt="">
+            </div>
+        </div>
+    </div>
 </div>
 
 

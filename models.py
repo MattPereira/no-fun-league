@@ -26,14 +26,15 @@ class User(db.Model):
         'managers.sleeper_id'), unique=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    location = db.Column(db.String(25), default="mom's basement")
-    ff_since = db.Column(db.Integer, default=2020)
-    fav_team = db.Column(db.String, default='lar')
     bio = db.Column(db.String(500), default='i am to lazy to edit my bio')
     philosophy = db.Column(
         db.String(250), default='A procrastinator’s work is never done.')
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
+    fav_team = db.Column(db.String, default='lar')
+    fav_position = db.Column(db.String, default='QB')
+    fav_player = db.Column(db.String, default='4046')
+    trade_desire = db.Column(db.String, default='5')
 
     manager = db.relationship(
         'Manager', backref=backref("user", uselist=False))

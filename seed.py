@@ -9,6 +9,8 @@ DRAFT_ID = 723677560327737344
 
 # Create all tables
 
+
+#### how to handle creation of tables in deployment??? ####
 db.drop_all()
 db.create_all()
 
@@ -24,17 +26,17 @@ for manager in managers_info:
     db.session.commit()
 
 # # Input all the users. Special attention to provide correct user_id
-matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
-                     last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
+# matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
+#                      last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
 
-brad = User.register(sleeper_id='470093099188613120', first_name='Brad',
-                     last_name='Johnson', email="bJohnson@gmail.com", password='eclipse21')
+# brad = User.register(sleeper_id='470093099188613120', first_name='Brad',
+#                      last_name='Johnson', email="bJohnson@gmail.com", password='eclipse21')
 
-jake = User.register(sleeper_id='723670786174451712', first_name='Jake',
-                     last_name='Dame', email="jakeD@gmail.com", password='eclipse21')
+# jake = User.register(sleeper_id='723670786174451712', first_name='Jake',
+#                      last_name='Dame', email="jakeD@gmail.com", password='eclipse21')
 
-lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
-                      last_name='Hall', email="cHall@gmail.com", password='eclipse21')
+# lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
+#                       last_name='Hall', email="cHall@gmail.com", password='eclipse21')
 
 # mikey = User.register(sleeper_id='725910594263265280', first_name='Mikey',
 #                       last_name='unknown', email="mikey@gmail.com", password='eclipse21')
@@ -55,8 +57,8 @@ lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
 #                       last_name='idk', email="grant@gmail.com", password='eclipse21')
 
 
-db.session.add_all([matt, brad, lemon, jake])
-db.session.commit()
+# db.session.add_all([matt, brad, lemon, jake])
+# db.session.commit()
 
 
 ######## Add some rule proposals for testing ############
