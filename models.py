@@ -35,8 +35,8 @@ class User(db.Model):
     location = db.Column(db.String(50), default='Planet, Earth')
     fav_team = db.Column(db.String, default='lar')
     fav_position = db.Column(db.String, default='QB')
-    fav_player = db.Column(db.String, default='4046')
-    trade_desire = db.Column(db.String, default='5')
+    fav_player = db.Column(db.String, default='4039')
+    trade_desire = db.Column(db.String, default='7')
 
     manager = db.relationship(
         'Manager', backref=backref("user", uselist=False))

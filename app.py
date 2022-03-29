@@ -138,12 +138,14 @@ def home_page():
     # update_managers()
     # update_rosters()
 
+    post = Post.query.get(1)
+
     roster = Roster.query.get(2)
 
     players = Player.query.filter(Player.id.in_(
         roster.player_ids)).order_by('position').all()
 
-    return render_template('index.html', roster=roster, players=players)
+    return render_template('index.html', roster=roster, players=players, post=post)
 
 
 @app.route('/users/<user_id>')
@@ -373,7 +375,7 @@ def handle_user_vote():
 
 @app.route('/update_players')
 def secret_player_call():
-    """Secret player call to update players only allowed once per day"""
+    """Secret player call to update players only allowed once per day per sleeper api docs"""
 
     update_players()
 

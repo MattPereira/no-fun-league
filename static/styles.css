@@ -4,6 +4,15 @@ body {
   /* #1a1917 */
 }
 
+.page-title {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+}
+
+.ubuntu-font {
+  font-family: "Ubuntu", sans-serif;
+}
+
 .bgGold {
   background-color: #fcba03;
 }

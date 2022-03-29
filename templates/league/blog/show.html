@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="text-center display-3 my-5 text-white">The No Fun League Blog</h1>
+    <h1 class="text-center display-3 my-5 text-white page-title">The No Fun League Blog</h1>
 
     <div class="row justify-content-center mb-5">
         <div class="col-auto">
@@ -17,7 +17,7 @@
         <div class="col-10">
             {% for post in posts %}
             <div class="p-5 border border-white border-1 mb-5 rounded posts">
-                <h5 class="text-center display-6">{{post.title}}</h5>
+                <h4 class="text-center">{{post.title}}</h4>
                 <div class="p-3">
                     <p class="indent lead">{{post.para_1}}</p>
                     {% if post.para_2 %}

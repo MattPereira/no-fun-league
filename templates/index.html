@@ -7,60 +7,86 @@
 <div class="container-fluid">
 
 <div class="row">
-    <div class="col-xl-8 p-5">
-        <h1 class="text-center mb-5 display-1 text-white">The No Fun League</h1>
-        <div class="row justify-content-center mb-5">
-            <div class="col-6">
-                <img src="/static/no_fun_league.png" class="rounded-circle border border-white border-5 img-fluid" alt="">
+    <div class="col-xl-8 p-5 text-white">
+        <div class="container">
+            <h1 class="text-center mb-5 display-1 text-white page-title">The No Fun League</h1>
+            <div class="row justify-content-center mb-5">
+                <div class="col-6">
+                    <img src="/static/no_fun_league.png" class="rounded-circle border border-white border-5 img-fluid" alt="">
+                </div>
+            </div>
+            <div class="introduction text-white">
+                <p class="lead indent">
+                    Founded in 2013, the No Fun League began as simple snake league amongst a small group of friends. The inaugural draft was conducted live at a local pizza parlor where most of the league members were employed at the time. Over the years, many managers have come and gone, but as of late the core of the league has begun to stabilize. 
+                </p>
+                <p class="lead indent">
+                    In the year 2019, the league officially converted to auction draft with FAAB waivers and multi-year keeper eligibility. Some foolish managers choose to allocate a majority of their auction budget towards ultra fragile fantasy positions like running back. Others more tactfully focus their spending on the high floor, high ceiling production found only in quarterbacks and wide receivers. 
+                </p>
+                <p class="lead indent">The competition and comraderie among the constituents of the league has never been feircer, and will only continue to intesify with each passing season. Long live the No Fun League.</p>
+            </div>
+            <div class="blog">
+                <h5 class="display-6 text-center my-5">League Blog</h5>
+                <div class="p-5 border border-white border-1 mb-5 rounded posts">
+                    <h4 class="text-center">{{post.title}}</h4>
+                    <div class="p-3">
+                        <p class="indent lead">{{post.para_1}}</p>
+                        {% if post.para_2 %}
+                        <p class="indent lead">{{post.para_2}}</p>
+                        {% endif %}
+                        {% if post.para_3 %}
+                        <p class="indent lead">{{post.para_3}}</p>
+                        {% endif %}
+                    </div>
+                    <hr class="bg-white border-5 border-white">
+                    <div class="row justify-content-between">
+                        <div class="col-auto align-self-center">
+                            <i>By <a href="/managers/{{post.posted_by.id}}">{{post.posted_by.full_name}}</a></i> on {{post.friendly_datetime}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="introduction px-5">
-            <p class="lead text-white indent">
-                Founded in 2013, the No Fun League began as simple snake league amongst a small group of friends. The inaugural draft was conducted live at a local pizza parlor where many of the league managers worked. Over the years, several members have come and gone, but recently the core of the league has stabilized. 
-            </p>
-            <p class="lead text-white indent">
-                In 2019, the league officially converted to auction draft with FAAB waivers and multi-year keepers. Each year, the managers compete to win the championship and avoid the ever-humiliating Toilet Bowl.
-            </p>
-        </div>
     </div>
-    <div class="col-xl-4 text-center bgDark text-white p-5">
-        <div class="champ mb-5">
-            <h3 class="mb-3">2021 Champ</h3>
-            <img class="img-fluid rounded-circle border border-warning border-5" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
-            <h5 class="my-3">{{roster.manager.display_name}}</h5>
+    <div class="col-xl-4 text-center bgDark text-white p-5 mb-5">
+        <div class="container">
+            <div class="champ mb-3 rounded p-3">
+                <h3 class="mb-3">2021 Champion</h3>
+                <img class="img-fluid rounded-circle border border-warning border-5" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
+                <h5 class="my-3">{{roster.manager.display_name}}</h5>
+            </div>
+    
+            <table class="table rounded bg-black text-white border border-white border-2">
+                <thead>
+                    <tr>
+                        <th colspan="4">
+                            <div class="row">
+                                <div><span class="roster-name">{{roster.manager.team_name}}</span></div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players%}
+                    <tr class="align-middle">
+                        {% if player.full_name %}
+                        <td class="text-center">
+                            <div class="p-2 rounded {{player.position}}">{{player.position}}</div>
+                        </td>
+                        <td class="player-pic">
+                            <img src="https://sleepercdn.com/content/nfl/players/thumb/{{player.id}}.jpg" class="img-fluid" alt="">
+                        </td>
+                        <td>
+                            <span>{{player.team}}</span>
+                        </td>
+                        <td>    
+                            {{player.full_name}}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>   
+            </table>
         </div>
-
-        <table class="table rounded bg-black text-white border border-white border-2">
-            <thead>
-                <tr>
-                    <th colspan="4">
-                        <div class="row">
-                            <div><span class="roster-name">{{roster.manager.team_name}}</span></div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for player in players%}
-                <tr class="align-middle">
-                    {% if player.full_name %}
-                    <td class="text-center">
-                        <div class="p-2 rounded {{player.position}}">{{player.position}}</div>
-                    </td>
-                    <td class="player-pic">
-                        <img src="https://sleepercdn.com/content/nfl/players/thumb/{{player.id}}.jpg" class="img-fluid" alt="">
-                    </td>
-                    <td>
-                        <span>{{player.team}}</span>
-                    </td>
-                    <td>    
-                        {{player.full_name}}
-                    </td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </tbody>   
-        </table>
     </div>
 </div>
 

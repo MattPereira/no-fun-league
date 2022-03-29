@@ -7,10 +7,7 @@ LEAGUE_ID = 723677559673409536
 
 DRAFT_ID = 723677560327737344
 
-# Create all tables
 
-
-#### how to handle creation of tables in deployment??? ####
 db.drop_all()
 db.create_all()
 
@@ -25,71 +22,7 @@ for manager in managers_info:
     db.session.add(m)
     db.session.commit()
 
-# # Input all the users. Special attention to provide correct user_id
-# matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
-#                      last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
-
-# brad = User.register(sleeper_id='470093099188613120', first_name='Brad',
-#                      last_name='Johnson', email="bJohnson@gmail.com", password='eclipse21')
-
-# jake = User.register(sleeper_id='723670786174451712', first_name='Jake',
-#                      last_name='Dame', email="jakeD@gmail.com", password='eclipse21')
-
-# lemon = User.register(sleeper_id='723692755766849536', first_name='Chris',
-#                       last_name='Hall', email="cHall@gmail.com", password='eclipse21')
-
-# mikey = User.register(sleeper_id='725910594263265280', first_name='Mikey',
-#                       last_name='unknown', email="mikey@gmail.com", password='eclipse21')
-
-# michael = User.register(sleeper_id='723694715693821952', first_name='Michael',
-#                         last_name='Meyer', email="mmeyer@gmail.com", password='eclipse21')
-
-# chris = User.register(sleeper_id='725808119531286528', first_name='Chris',
-#                       last_name='Thomas', email="cThomas@gmail.com", password='eclipse21')
-
-# kaelin = User.register(sleeper_id='469946665449549824', first_name='Kaelin',
-#                        last_name='Ragan', email="kRagan@gmail.com", password='eclipse21')
-
-# brett = User.register(sleeper_id='725777513267126272', first_name='Brett',
-#                       last_name='Psomething', email="brettP@gmail.com", password='eclipse21')
-
-# grant = User.register(sleeper_id='469964078912106496', first_name='Grant',
-#                       last_name='idk', email="grant@gmail.com", password='eclipse21')
-
-
-# db.session.add_all([matt, brad, lemon, jake])
-# db.session.commit()
-
-
-######## Add some rule proposals for testing ############
-# prop1 = Proposal(user_id=4, ammendment="Reinstate kickers as a real fantasy position",
-#                  argument="Kickers are fantasy player too. They should not be discrimated against. They should be celebrated!")
-
-# prop2 = Proposal(user_id=2, ammendment="Change QB2 starting roster position to a super flex instead",
-#                  argument="This rule change will allow for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels bad when you dont have a second QB to start on your roster. ")
-# db.session.add_all([prop1, prop2])
-# db.session.commit()
-
-
-########## Add some votes on the propposals ##############
-# v1 = ProposalVotes(proposal_id=1, user_id=1, agree=True)
-# v2 = ProposalVotes(proposal_id=1, user_id=2, agree=True)
-# v3 = ProposalVotes(proposal_id=1, user_id=3, agree=True)
-# v4 = ProposalVotes(proposal_id=1, user_id=4, agree=True)
-# v5 = ProposalVotes(proposal_id=1, user_id=5, agree=False)
-# v6 = ProposalVotes(proposal_id=1, user_id=6, agree=False)
-# v7 = ProposalVotes(proposal_id=2, user_id=1, agree=False)
-# v8 = ProposalVotes(proposal_id=2, user_id=2, agree=False)
-# v9 = ProposalVotes(proposal_id=2, user_id=3, agree=False)
-# v10 = ProposalVotes(proposal_id=2, user_id=4, agree=True)
-# v11 = ProposalVotes(proposal_id=1, user_id=7, agree=True)
-# v12 = ProposalVotes(proposal_id=1, user_id=8, agree=True)
-# v13 = ProposalVotes(proposal_id=1, user_id=9, agree=True)
-# db.session.add_all([v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13])
-# db.session.commit()
-
-
-# ADDS ALL THE ROSTERS DATA FOR LEAGUE
+# ADD ALL THE ROSTERS DATA FOR LEAGUE
 
 rosters_data = requests.get(
     f"https://api.sleeper.app/v1/league/{LEAGUE_ID}/rosters").json()
@@ -111,7 +44,7 @@ for roster in rosters_data:
     db.session.add(r)
     db.session.commit()
 
-# ADDS ALL THE DRAFT DATA FOR SPECIFIC 2021 DRAFT
+# ADD ALL THE DRAFT DATA FOR SPECIFIC 2021 DRAFT
 
 draft_data = requests.get(
     f'https://api.sleeper.app/v1/draft/{DRAFT_ID}/picks').json()
@@ -123,8 +56,44 @@ for pick in draft_data:
     db.session.commit()
 
 
+# Input myself first so I can display an initial blog post and create the first poll
+matt = User.register(sleeper_id='724424250483650560', first_name='Matt',
+                     last_name='Pereira', email="ramchips99@gmail.com", password='eclipse21')
+
+
+db.session.add(matt)
+db.session.commit()
+
+
+# Create first blog post welcoming the managers
+post = Post(user_id=1, title="Welcome to the Managers",
+            para_1="Allow me to introduce everyone to the official No Fun League website. To begin, you can create your user account by registering. You must choose your sleeper account name from the select input, and then provide a name, email, and password. You will then be automatically logged in and redirected to your manager profile page where you are free to customize the content to your liking. Next, you may want to peruse the roster pages or take a gander at the results of the 2021 draft.",
+            para_2="Another feature I would like to highlight is the polls page where you can propose amendments to the No Fun League constitution. After submitting, all members of the league who are registered and logged in will have the ability to vote on your proposition. Please note that, unlike a blog post, the contents of a rule change proposal cannot be edited or deleted.",
+            para_3="Since the site is still very much a work in progress, please do not hesitate to reach out if you encounter any bugs or would like to suggest an idea for some new feature.")
+
+db.session.add(post)
+db.session.commit()
+
+# Create the first few rule change proposals
+prop1 = Proposal(user_id=1, ammendment="Reinstate kickers as a legitimate fantasy position",
+                 argument="Kickers are fantasy players too. They should not be discrimated against. The game of fantasy football should be celebrated in its entirety!")
+
+prop2 = Proposal(user_id=1, ammendment="Change QB2 starting roster position to a super flex where any position may be started",
+                 argument="This rule change is a pivotal step in allowing for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels real bad when you dont have a second QB to start on your roster. ")
+db.session.add_all([prop1, prop2])
+db.session.commit()
+
+
+########## Add some votes on the propposals ##############
+v1 = ProposalVotes(proposal_id=1, user_id=1, agree=True)
+v2 = ProposalVotes(proposal_id=2, user_id=1, agree=True)
+
+db.session.add_all([v1, v2])
+db.session.commit()
+
+
 ### ADDS ALL THE PLAYERS WHO HAVE AN ID ON SOME ROSTER TO PLAYER TABLE ####
-## ONLY ALLOWED TO CALL PLAYERS REQ ONCE PER DAY ##
+## ONLY ALLOWED TO CALL PLAYERS REQ FROM SLEEPER API ONCE PER DAY ##
 # players = requests.get("https://api.sleeper.app/v1/players/nfl") #
 f = open('players.json', 'r')
 
