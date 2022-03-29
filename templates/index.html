@@ -4,15 +4,69 @@
 
 {% block content %}
 
-<div class="container">
-    <h1 class="text-center my-5 display-1 text-white">The No Fun League</h1>
-<div class="row justify-content-center mb-5">
-    <div class="col-auto">
-        <img src="/static/no_fun_league.png" class="rounded-circle border border-white border-5 img-fluid" alt="">
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col-xl-8 p-5">
+        <h1 class="text-center mb-5 display-1 text-white">The No Fun League</h1>
+        <div class="row justify-content-center mb-5">
+            <div class="col-6">
+                <img src="/static/no_fun_league.png" class="rounded-circle border border-white border-5 img-fluid" alt="">
+            </div>
+        </div>
+        <div class="introduction px-5">
+            <p class="lead text-white indent">
+                Founded in 2013, the No Fun League began as simple snake league amongst a small group of friends. The inaugural draft was conducted live at a local pizza parlor where many of the league managers worked. Over the years, several members have come and gone, but recently the core of the league has stabilized. 
+            </p>
+            <p class="lead text-white indent">
+                In 2019, the league officially converted to auction draft with FAAB waivers and multi-year keepers. Each year, the managers compete to win the championship and avoid the ever-humiliating Toilet Bowl.
+            </p>
+        </div>
+    </div>
+    <div class="col-xl-4 text-center bgDark text-white p-5">
+        <div class="champ mb-5">
+            <h3 class="mb-3">2021 Champ</h3>
+            <img class="img-fluid rounded-circle border border-warning border-5" src="https://sleepercdn.com/avatars/thumbs/{{roster.manager.avatar_id}}" alt="">
+            <h5 class="my-3">{{roster.manager.display_name}}</h5>
+        </div>
+
+        <table class="table rounded bg-black text-white border border-white border-2">
+            <thead>
+                <tr>
+                    <th colspan="4">
+                        <div class="row">
+                            <div><span class="roster-name">{{roster.manager.team_name}}</span></div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players%}
+                <tr class="align-middle">
+                    {% if player.full_name %}
+                    <td class="text-center">
+                        <div class="p-2 rounded {{player.position}}">{{player.position}}</div>
+                    </td>
+                    <td class="player-pic">
+                        <img src="https://sleepercdn.com/content/nfl/players/thumb/{{player.id}}.jpg" class="img-fluid" alt="">
+                    </td>
+                    <td>
+                        <span>{{player.team}}</span>
+                    </td>
+                    <td>    
+                        {{player.full_name}}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>   
+        </table>
     </div>
 </div>
-    <p class="lead text-white text-center">Founded in 2013, the No Fun League began as simple snake redraft league amongst a small group of friends. In 2019, the league officially converted to auction draft with FAAB waivers and multi-year keepers. Each year, the managers compete to win the championship and avoid the ever-humiliating Toilet Bowl.</p>
-</div>
+
+
+
+</div>  
 
 
 

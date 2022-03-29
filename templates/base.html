@@ -12,7 +12,7 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+<nav class="navbar navbar-expand-lg navbar-light bgGold" id="navbar">
   <div class="container-fluid">
    <a class="navbar-brand text-center" href="/">
     <img src="/static/no_fun_league.png" class="logo ms-3 border border-secondary border-3 rounded-circle" alt="">
@@ -59,13 +59,33 @@
   </div> <!-- container-fluid.// -->
  </nav>
 
-    <div class="container my-3">
+
         {% for category, msg in get_flashed_messages(with_categories=True) %}
-        <div class="rounded-pill text-center alert alert-{{category}}">{{ msg }}</div>
+        <div class="container mt-3">
+          <div class="rounded-pill text-center alert alert-{{category}}">{{ msg }}</div>
+        </div>
         {% endfor %}
-    </div>
+
         {% block content %}
         {% endblock %}
+
+
+<footer class="bg-secondary py-1 footer">
+  <div class="row justify-content-center">
+    <div class="col-auto">
+      <a href="https://www.linkedin.com/in/matt-pereira-32428a63/" class="link-dark">
+        <i class="fa-brands fa-3x fa-linkedin"></i>
+      </a>
+    </div>
+    <div class="col-auto">
+      <a href="https://github.com/MattPereira" class="link-dark">
+        <i class="fa-brands fa-3x fa-github-square"></i>
+      </a>
+    </div>
+  </div>
+  </div>
+</footer>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"

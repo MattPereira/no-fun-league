@@ -4,7 +4,7 @@ body {
   /* #1a1917 */
 }
 
-#navbar {
+.bgGold {
   background-color: #fcba03;
 }
 
@@ -108,4 +108,11 @@ body {
 
 p.indent {
   text-indent: 50px;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
