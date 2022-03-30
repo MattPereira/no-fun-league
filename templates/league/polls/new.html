@@ -5,10 +5,11 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="text-center display-5 my-5 text-white">New Rule Proposal</h1>
 
-    <div class="row justify-content-center text-white">
-        <div class="col-md-8">
+    <div class="row justify-content-center text-white my-5">
+        <div class="col-md-8 bg-black p-5 rounded">
+          <h1 class="text-center display-5 text-white page-title">Proposition</h1>
+
           <form method="POST" action="/polls/new">
     
             {{ form.hidden_tag() }}
@@ -16,7 +17,7 @@
             {% for field in form if field.widget.input_type != 'hidden' %}
             <p>
 
-              {{ field.label(class_="form-label") }}
+              <b>{{ field.label(class_="form-label") }}</b>
               {{ field(class_="form-control", rows='7')}}
           
               {% for error in field.errors %}

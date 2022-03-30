@@ -4,33 +4,37 @@
 
 {% block content %}
 
-<h1 class="text-center display-5 my-5 text-white">Create Blog Post</h1>
+<div class="container mb-5">
 
-<div class="row justify-content-center text-white">
-    <div class="col-md-8">
-      <form method="POST" action="/blog/new">
+  <div class="row justify-content-center text-white my-5">
+      <div class="col-md-8 bg-black p-5 my-5 rounded">
+        <h1 class="text-center display-5">Blog Post</h1>
 
-        {{ form.hidden_tag() }}
-      
-        {% for field in form if field.widget.input_type != 'hidden' %}
-        <p>
-          {{ field.label(class_="form-label") }}
-          {{ field(class_="form-control", rows="7") }}
-      
-          {% for error in field.errors %}
-          <span class="form-text text-danger">{{ error }}</span>
+        <form method="POST" action="/blog/new">
+  
+          {{ form.hidden_tag() }}
+        
+          {% for field in form if field.widget.input_type != 'hidden' %}
+          <p>
+            {{ field.label(class_="form-label") }}
+            {{ field(class_="form-control", rows="7") }}
+        
+            {% for error in field.errors %}
+            <span class="form-text text-danger">{{ error }}</span>
+            {% endfor %}
+          </p>
           {% endfor %}
-        </p>
-        {% endfor %}
-
-        <div class="row justify-content-end">
-            <div class="col-auto">
-                <button class="btn btn-primary" type="submit">Add Post</button>
-            </div>
-        </div>
-      </form>
-    </div>
+  
+          <div class="row justify-content-end">
+              <div class="col-auto">
+                  <button class="btn btn-primary" type="submit">Add Post</button>
+              </div>
+          </div>
+        </form>
+      </div>
+  </div>
 </div>
+
 
 
 {% endblock %}

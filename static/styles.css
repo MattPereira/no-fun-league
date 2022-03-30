@@ -1,7 +1,8 @@
 /* BOOTSTRAP WILL OVERRIDE ANY STYLES UNLESS YOU SET UP SASS */
 body {
   background-color: #333333;
-  /* #1a1917 */
+  min-height: 100vh;
+  position: relative;
 }
 
 .page-title {
@@ -69,6 +70,11 @@ body {
   font-size: 1.5rem;
 }
 
+.roster-info {
+  font-size: 1.25rem;
+  font-family: "Ubuntu", sans-serif;
+}
+
 .proposals {
   background-color: #0e1111;
 }
@@ -121,7 +127,6 @@ p.indent {
 
 .footer {
   position: fixed;
-  left: 0;
   bottom: 0;
   width: 100%;
 }

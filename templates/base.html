@@ -24,6 +24,7 @@
    </button>
    <div class="collapse navbar-collapse" id="main_nav">
    <ul class="navbar-nav mx-auto">
+     <li class="nav-item"><a href="/" class="nav-link text-dark"><i class="fa-solid fa-house"></i> Home</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link text-dark" href="/managers" id="navbarDropdown" role="button" data-bs-toggle="dropdown"><i class="fa-solid fa-users me-2"> </i>Managers</a> 
         <ul class="dropdown-menu border border-1 border-white" id="dropdown">
@@ -45,6 +46,7 @@
      <li class="nav-item"><a class="nav-link text-dark" href="/draftboard"><i class="fa-solid fa-table-cells"></i> Drafts </a></li>
      <li class="nav-item"><a class="nav-link text-dark" href="/blog"><i class="fa-brands fa-blogger"></i> Blog </a></li>
      <li class="nav-item"><a class="nav-link text-dark" href="/polls"><i class="fa-solid fa-square-poll-vertical"></i> Polls </a></li>
+     
    </ul>
    <ul class="navbar-nav">
     {% if session['user_id'] %}
@@ -53,8 +55,8 @@
       <button type="submit" class="btn btn-outline-dark rounded-pill border border-3 border-dark me-5"><b>Logout</b></button>
     </form>
     {% else %}
-    <a href="/login" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Login</b></a>
-    <a href="/register" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Register</b></a>
+    <li class="nav-item"><a href="/login" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Login</b></a></li>
+    <li class="nav-item"><a href="/register" class="btn btn-outline-dark border border-2 border-dark rounded-pill me-3"><b>Register</b></a></li>
     {% endif %}
    </ul>
    </div> <!-- navbar-collapse.// -->

@@ -17,19 +17,19 @@
     {% endif %}
     <div class="row justify-content-center my-5 text-white text-center">
         <div class="col-md-10">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center my-5">
                 <img class="img-fluid rounded-circle border border-white border-3 w-25" src="https://sleepercdn.com/avatars/{{user.manager.avatar_id}}" alt="">
             </div>
-            <div class="text-center mb-5 mt-3">
+            <div class="text-center my-5">
                 <h1 class="display-5 mb-0">{{user.first_name}} {{user.last_name}}</h1>
                 <h5 class="text-secondary">Manager of <i>{{user.manager.team_name}}</i> </h5>
                 <h6 class="text-light">{{user.location}}</h6>
             </div>
             <div class="row">
-                <div class="my-3">
+                <div class="my-4">
                     <p class="lead">{{user.bio}}</p>
                 </div>
-                <div class="my-3">
+                <div class="my-5">
                     <h5 class="text-center">Team Philosophy</h5>
                     <p><i>{{user.philosophy}}</i></p>
                 </div>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="text-warning pt-3 pb-2 user-info">
+<div class="text-warning pt-3 pb-2 user-info mb-5">
     <div class="row justify-content-between text-center my-5">
         <div class="col-md-3 mb-3">
             <p><b>Favorite Position</b></p>

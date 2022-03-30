@@ -4,12 +4,55 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container mb-5">
     <h1 class="display-3 text-white text-center my-5 page-title">{{roster.manager.team_name}}</h1>
 
+    
     <div class="row my-5 justify-content-center">
-        <div class="col-sm-12 col-md-8 col-lg-4">
-            <table class="table table-responsive rounded bg-black text-white border border-white border-2">
+        <div class=" col-xs-10 col-sm-12 col-md-8 col-lg-5">
+            <table class="table table-light table-striped table-bordered text-center border border-dark border-2 roster-info">
+                <tbody>
+                    <tr>
+                        <td><b>MANAGER</b></td>
+                        <td><a href="/managers/{{roster.manager.user.id}}" class="link-dark">{{roster.manager.user.full_name}}</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>WINS</b></td>
+                        <td>{{roster.wins}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>LOSSES</b></td>
+                        <td>{{roster.losses}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>PPTS</b></td>
+                        <td>{{roster.ppts}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>FPTS</b></td>
+                        <td>{{roster.fpts}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>FPTS AGAINST</b></td>
+                        <td>{{roster.fpts_against}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>STREAK</b> </td>
+                        <td>{{roster.streak}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>AVG AGE</b> </td>
+                        <td>{{avgs['avg_age']}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>AVG HEIGHT</b> </td>
+                        <td>{{avgs['avg_height']}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-5">
+            <table class="table table-responsive rounded bg-black text-white border border-white border-2 roster-info">
                 <thead>
                     <tr>
                         <th colspan="4">
@@ -44,40 +87,6 @@
                     </tr>
                     {% endfor %}
                 </tbody>   
-            </table>
-        </div>
-        <div class=" col-xs-10 col-sm-8 col-md-4">
-            <table class="table table-dark table-striped table-bordered text-center text-white border border-white border-2">
-                <tbody>
-                    <tr>
-                        <td><b>MANAGER</b></td>
-                        <td><a href="/managers/{{roster.manager.user.id}}" class="link-light">{{roster.manager.user.full_name}}</a></td>
-                    </tr>
-                    <tr>
-                        <td><b>WINS</b></td>
-                        <td>{{roster.wins}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>LOSSES</b></td>
-                        <td>{{roster.losses}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>PPTS</b></td>
-                        <td>{{roster.ppts}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>FPTS</b></td>
-                        <td>{{roster.fpts}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>FPTS AGAINST</b></td>
-                        <td>{{roster.fpts_against}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>STREAK</b> </td>
-                        <td>{{roster.streak}}</td>
-                    </tr>
-                </tbody>
             </table>
         </div>
     </div>

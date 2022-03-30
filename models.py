@@ -31,10 +31,10 @@ class User(db.Model):
     bio = db.Column(
         db.String(500), default='I am a team manager in the No Fun League. Since I became a manager I am no longer allowed to have any fun. My strategy is to complain the whole time about how little fun I am having.')
     philosophy = db.Column(
-        db.String(250), default='Draft only the highest scoring players and win many championships.')
-    location = db.Column(db.String(50), default='Planet, Earth')
+        db.String(250), default='Draft only the highest scoring players to win many championships.')
+    location = db.Column(db.String(50), default='NA, Planet Earth')
     fav_team = db.Column(db.String, default='lar')
-    fav_position = db.Column(db.String, default='QB')
+    fav_position = db.Column(db.String, default='WR')
     fav_player = db.Column(db.String, default='4039')
     trade_desire = db.Column(db.String, default='7')
 

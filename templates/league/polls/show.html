@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container mb-5">
     <h1 class="text-center display-3 my-5 text-white page-title">The No Fun League Polls</h1>
 
     <div class="row justify-content-center mb-5">
@@ -13,10 +13,11 @@
         </div>
     </div>
 
-    <p class="lead text-white text-center m-5">No Fun League managers who are registered and logged in may submit their proposals to ammend the No Fun League constitution here. Once a proposal is submitted, it cannot be altered in any way. Each manager is allowed to vote only once. A propsoal passes when more than half the league managers have agreed.</p>
+    <p class="lead text-white text-center p-5">No Fun League managers who are registered and logged in may submit their proposals to ammend the No Fun League constitution here. Once a proposal is submitted, it cannot be altered in any way. Each manager is allowed to vote only once per proposal. A rule change will occur only when more than half the league managers have agreed.</p>
 
     <div class="row justify-content-center text-center">
         <div class="col-10">
+
             {% for proposal in proposals %}
             <div class="p-5 mb-5 rounded text-white border border-white proposals">
                 <div class="row justify-content-center mb-3">
@@ -32,14 +33,14 @@
                         <form action="/polls/vote" method="POST">
                             <input type="hidden" name="prop-id" value="{{proposal.id}}">
                             <input type="hidden" name="decision" value="{{True}}">
-                            <button type="submit" class="btn btn-primary rounded-pill px-5"><b>AGREE</b></button>
+                            <button type="submit" class="btn btn-primary rounded-pill"><b>AGREE</b></button>
                         </form>
                     </div>
                     <div class="col-6">
                         <form action="/polls/vote" method="POST">
                             <input type="hidden" name="prop-id" value="{{proposal.id}}">
                             <input type="hidden" name="decision" value="{{False}}">
-                            <button type="submit" class="btn btn-danger rounded-pill px-5"><b>DISAGREE</b></button>
+                            <button type="submit" class="btn btn-danger rounded-pill"><b>DISAGREE</b></button>
                         </form>
                     </div>
                 </div>

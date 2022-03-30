@@ -4,6 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Proposal, ProposalVotes
 from forms import RegisterForm, LoginForm, EditUserForm, BlogPostForm, ProposalForm
 from sleeper import update_picks, update_managers, update_rosters, update_players
+from helper import player_averages
 
 import os
 
@@ -209,10 +210,12 @@ def show_roster(roster_id):
     players = Player.query.filter(Player.id.in_(
         roster.player_ids)).order_by('position').all()
 
-    return render_template('league/roster.html', roster=roster, players=players)
+    averages = player_averages(players)
+
+    return render_template('league/roster.html', roster=roster, players=players, avgs=averages)
 
 
-@app.route('/draftboard', methods=["GET", "POST"])
+@ app.route('/draftboard', methods=["GET", "POST"])
 def show_draftboard():
 
     update_picks()
@@ -233,7 +236,7 @@ def show_draftboard():
     return render_template('league/draftboard.html', t1=t1, t2=t2, t3=t3, t4=t4, t5=t5, draft=draft_picks)
 
 
-@app.route('/blog', methods=['GET'])
+@ app.route('/blog', methods=['GET'])
 def show_blog():
     """Show all blog posts by order of most recent"""
     posts = Post.query.order_by(Post.created_at.desc()).all()
@@ -241,7 +244,7 @@ def show_blog():
     return render_template('league/blog/show.html', posts=posts)
 
 
-@app.route('/blog/new', methods=["GET", "POST"])
+@ app.route('/blog/new', methods=["GET", "POST"])
 def add_post():
     """Show form if GET, handle creating new blog post if POST"""
 
@@ -263,7 +266,7 @@ def add_post():
     return render_template('league/blog/new.html', form=form)
 
 
-@app.route('/blog/<int:post_id>/edit', methods=["GET", "POST"])
+@ app.route('/blog/<int:post_id>/edit', methods=["GET", "POST"])
 def edit_post(post_id):
     """Handle display of edit form and editing a blog post"""
 
@@ -292,7 +295,7 @@ def edit_post(post_id):
     return render_template('league/blog/edit.html', form=form, post=post)
 
 
-@app.route('/blog/<int:post_id>/delete', methods=["POST"])
+@ app.route('/blog/<int:post_id>/delete', methods=["POST"])
 def destroy_post(post_id):
     """Handle deletion of a blog post"""
 
@@ -313,7 +316,7 @@ def destroy_post(post_id):
     return redirect('/blog')
 
 
-@app.route('/polls', methods=['GET'])
+@ app.route('/polls', methods=['GET'])
 def show_polls():
     """Show all rule proposals and user submitted votes"""
 
@@ -322,7 +325,7 @@ def show_polls():
     return render_template('league/polls/show.html', proposals=proposals)
 
 
-@app.route('/polls/new', methods=["GET", "POST"])
+@ app.route('/polls/new', methods=["GET", "POST"])
 def add_proposal():
     """Show form if GET, create new proposal if POST"""
 
