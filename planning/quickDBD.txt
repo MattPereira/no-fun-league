@@ -1,16 +1,17 @@
 users
 -
-id TEXT PK
-sleeper_id TEXT
+id SERIAL PK
+sleeper_id TEXT FK >- managers.sleeper_id
 email TEXT
 password TEXT
 first_name TEXT
 last_name TEXT
-location TEXT
-ff_since TEXT
-team TEXT
 bio TEXT
 philosophy TEXT
+trade_desire TEXT
+fav_team TEXT
+fav_position TEXT
+fav_player TEXT
 
 
 players
@@ -24,11 +25,10 @@ age INTEGER
 height STRING
 
 
-
 rosters
 -
 id INTEGER PK
-owner_id INTEGER FK >- managers.user_id
+owner_id INTEGER FK >- managers.sleeper_id
 wins INTEGER
 losses INTEGER
 total_fpts INTEGER
@@ -40,7 +40,7 @@ player_ids PICKLETYPE FK >- players.id
 picks
 -
 id SERIAL PK
-picked_by TEXT FK >- managers.user_id
+picked_by TEXT FK >- managers.sleeper_id
 roster_id INTEGER
 draft_id TEXT
 first_name STRING
@@ -53,7 +53,7 @@ amount STRING
 managers
 -
 id SERIAL PK
-user_id TEXT FK >- users.sleeper_id
+sleeper_id TEXT
 display_name TEXT
 avatar_id TEXT
 team_name TEXT
@@ -64,21 +64,24 @@ post
 id SERIAL PK
 user_id INTEGER FK >- users.id
 title STRING
-content STRING
+para_1 STRING
+para_2 STRING
+para_3 STRING
 created_at DATETIME
 
 
 proposal_votes
 -
 id SERIAL PK
-proposal_id INTEGER FK >- proposal.id
+proposal_id INTEGER FK >- proposals.id
 user_id INTEGER FK >- users.id
 agree BOOLEAN
 
-proposal
+proposals
 -
 id SERIAL PK
 user_id INTEGER FK >- users.id
 ammendment TEXT
 argument TEXT
 created_at DATETIME
+
