@@ -14,8 +14,8 @@ body {
   font-family: "Ubuntu", sans-serif;
 }
 
-.bgGold {
-  background-color: #fcba03;
+.bg-gold {
+  background-color: #F3B700;
 }
 
 #dropdown {
@@ -47,11 +47,11 @@ body {
 }
 
 .WR {
-  background-color: #0d6efd;
+  background-color: #0075C4;
 }
 
 .TE {
-  background-color: #6f42c1;
+  background-color: #724E91;
 }
 
 .K {

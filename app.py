@@ -135,18 +135,19 @@ def logout_user():
 def home_page():
     """Display No Fun League home page"""
 
-    ## grab/update all the necessary data for app when user requests homepage ##
-    # update_managers()
-    # update_rosters()
+    # Updating the managers table with current Sleeper information
+    update_managers()
 
+    # Grabbing first post to display on home page welcome managers and explain site
     post = Post.query.get(1)
 
-    roster = Roster.query.get(2)
+    # The 2021 league champion roster
+    champ = Roster.query.get(2)
 
     players = Player.query.filter(Player.id.in_(
-        roster.player_ids)).order_by('position').all()
+        champ.player_ids)).order_by('position').all()
 
-    return render_template('index.html', roster=roster, players=players, post=post)
+    return render_template('index.html', roster=champ, players=players, post=post)
 
 
 @app.route('/managers/<int:user_id>')
@@ -195,6 +196,8 @@ def edit_user(user_id):
 @app.route('/rosters/<int:roster_id>')
 def show_roster(roster_id):
     """Show details for a specific roster"""
+
+    update_rosters()
 
     roster = Roster.query.get(roster_id)
 
