@@ -5,6 +5,8 @@ from models import db, connect_db, User, Player, Roster, Manager, Pick, Post, Pr
 from forms import RegisterForm, LoginForm, EditUserForm, BlogPostForm, ProposalForm
 from sleeper import update_picks, update_managers, update_rosters, update_players
 from helper import player_averages
+from sqlalchemy.exc import IntegrityError
+
 
 import os
 
@@ -79,17 +81,18 @@ def register_user():
     form.sleeper_id.choices = sleeper_accounts
 
     if form.validate_on_submit():
-        sleeper_id = form.sleeper_id.data
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        password = form.password.data
-        email = form.email.data
+        try:
+            new_user = User.register(
+                sleeper_id=form.sleeper_id.data,
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data,
+                password=form.password.data)
+            db.session.commit()
 
-        new_user = User.register(
-            sleeper_id, first_name, last_name, email, password)
-        db.session.add(new_user)
-
-        db.session.commit()
+        except IntegrityError:
+            flash("Sleeper account already taken", 'danger')
+            return redirect('/register')
 
         session['user_id'] = new_user.id
         flash('Welcome to the No Fun League! Please edit your profile!', "success")
@@ -149,16 +152,19 @@ def home_page():
     return render_template('index.html', roster=roster, players=players, post=post)
 
 
-@app.route('/users/<user_id>')
-def show_user(user_id):
-    """Show information about a user AND show all user submitted feedback"""
+@app.route('/managers/<int:user_id>')
+def show_manager(user_id):
+    """Show details about a manager"""
 
-    user = User.query.get_or_404(user_id)
+    user = User.query.get(user_id)
 
-    return render_template('users/show.html', user=user)
+    if user != None:
+        return render_template('league/manager.html', user=user)
+
+    return render_template('/league/nomanager.html')
 
 
-@app.route('/users/<user_id>/update', methods=["GET", "POST"])
+@app.route('/managers/<user_id>/update', methods=["GET", "POST"])
 def edit_user(user_id):
     """Allow user to edit information about themself"""
 
@@ -187,18 +193,6 @@ def edit_user(user_id):
         return redirect(f'/managers/{user.id}')
 
     return render_template('users/edit.html', user=user, form=form)
-
-
-@app.route('/managers/<int:user_id>')
-def show_manager(user_id):
-    """Show details about a manager"""
-
-    user = User.query.get(user_id)
-
-    if user != None:
-        return render_template('league/manager.html', user=user)
-
-    return render_template('/league/nomanager.html')
 
 
 @app.route('/rosters/<int:roster_id>')

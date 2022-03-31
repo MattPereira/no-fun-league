@@ -29,6 +29,7 @@ class LeagueViews(TestCase):
             self.assertIn('2021 DRAFTBOARD', html)
 
     def test_blog(self):
+        """Make sure blog page is displayed"""
         with app.test_client() as client:
             res = client.get('/blog')
             html = res.get_data(as_text=True)
@@ -38,6 +39,7 @@ class LeagueViews(TestCase):
             self.assertIn('NEW POST', html)
 
     def test_polls(self):
+        """Make sure polls page is displayed"""
         with app.test_client() as client:
             res = client.get('/polls')
             html = res.get_data(as_text=True)
