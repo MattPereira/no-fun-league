@@ -10,10 +10,10 @@ The [No Fun League](https://no-fun-league.herokuapp.com/) is a website I built f
 
 ---
 ### **Features**
-* Authentication and authorization
+* User authentication and authorization
 * Create, Read, Update, and Delete functionality
-* Voting system
 * Population of database with data from [Sleeper API](https://docs.sleeper.app/) calls that will update information as future NFL seasons unfold
+* Voting system for league members to decide rule changes
 * Displaying all that information from the API on roster and draft pages
 
 ---
