@@ -6,7 +6,7 @@ app.config['TESTING'] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
 
-class LeagueViews(TestCase):
+class NoFunLeagueViews(TestCase):
 
     def test_home_page(self):
         """Make sure home page is displayed"""
@@ -19,8 +19,8 @@ class LeagueViews(TestCase):
             self.assertIn('League Blog', html)
             self.assertIn('2021 Champion', html)
 
-    def test_draftboard(self):
-        """Make sure draft board is displayed"""
+    def test_drafts(self):
+        """Make sure draft board page is displayed"""
         with app.test_client() as client:
             res = client.get('/draftboard')
             html = res.get_data(as_text=True)

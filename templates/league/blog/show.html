@@ -30,7 +30,7 @@
                 <hr class="bg-white border-5 border-white">
                 <div class="row justify-content-between">
                     <div class="col-auto align-self-center">
-                        <i>By <a href="/managers/{{post.posted_by.id}}">{{post.posted_by.full_name}}</a></i> on {{post.friendly_datetime}}
+                        <i>By <a href="/managers/{{post.user.id}}">{{post.user.full_name}}</a></i> on {{post.friendly_datetime}}
                     </div>
                     <div class="col-auto align-self-center">
                         <form action="/blog/{{post.id}}/delete" method="POST">

@@ -67,7 +67,7 @@ db.session.commit()
 
 # Create first blog post welcoming the managers
 post = Post(user_id=1, title="Welcome to the Managers",
-            para_1="Allow me to introduce everyone to the official No Fun League website. To begin, you can create your user account by registering. You must choose your sleeper account name from the select input, and then provide a name, email, and password. You will then be automatically logged in and redirected to your manager profile page where you are free to customize the content to your liking. Next, you may want to peruse the roster pages or take a gander at the results of the 2021 draft.",
+            para_1="Allow me to introduce you to the official No Fun League website. To begin, create your user account by registering. You will choose your sleeper account name from the select input, and then provide a name, email, and password. Registering will redirect you to your manager profile page where you can customize your profile. Next, you may want to peruse the roster pages or take a gander at the results of the 2021 draft.",
             para_2="Another feature I would like to highlight is the polls page where you can propose amendments to the No Fun League constitution. After submitting, all members of the league who are registered and logged in will have the ability to vote on your proposition. Please note that, unlike a blog post, the contents of a rule change proposal cannot be edited or deleted.",
             para_3="Since the site is still very much a work in progress, please do not hesitate to reach out if you encounter any bugs or would like to suggest ideas for some new features.")
 
@@ -79,7 +79,7 @@ prop1 = Proposal(user_id=1, ammendment="Reinstate kickers as a legitimate fantas
                  argument="Kickers are fantasy players too. They should not be discrimated against. The game of fantasy football should be celebrated in its entirety!")
 
 prop2 = Proposal(user_id=1, ammendment="Change QB2 starting roster position to a super flex where any position may be started",
-                 argument="This rule change is a pivotal step in allowing for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels real bad when you dont have a second QB to start on your roster. ")
+                 argument="This rule change is a pivotal step in allowing for the league to expand from 10 managers to 12. More managers means more prize money. Also, it feels real bad when you dont have a second QB to start on your roster.")
 db.session.add_all([prop1, prop2])
 db.session.commit()
 

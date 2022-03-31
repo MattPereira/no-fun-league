@@ -151,7 +151,7 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.datetime.now())
 
-    posted_by = db.relationship('User')
+    user = db.relationship('User')
 
     def __repr__(self):
         return f"<Post title:{self.title} created_at:{self.created_at}>"
@@ -174,7 +174,7 @@ class Proposal(db.Model):
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.datetime.now())
 
-    proposed_by = db.relationship('User')
+    user = db.relationship('User')
     votes = db.relationship('ProposalVotes')
 
 
