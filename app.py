@@ -34,7 +34,7 @@ toolbar = DebugToolbarExtension(app)
 def add_info_to_g():
     """Add managers, rosters, and user to Flask global"""
 
-    # allows for dropdown links to display through base.html
+    # allows for dropdown links on navbar to display through base.html
 
     g.managers = Manager.query.all()
     g.rosters = Roster.query.all()
@@ -69,15 +69,12 @@ def register_user():
 
     form = RegisterForm()
 
-    # figure out which users have already registered and remove them from choices
+    # Determine which users have already registered and remove them from select input choices
     users = User.query.all()
     registered = [u.manager.id for u in users]
-
     unregistered = Manager.query.filter(Manager.id.notin_(registered))
-
     sleeper_accounts = [(m.sleeper_id, m.display_name)
                         for m in unregistered]
-
     form.sleeper_id.choices = sleeper_accounts
 
     if form.validate_on_submit():
@@ -254,7 +251,7 @@ def add_post():
         db.session.add(post)
         db.session.commit()
 
-        flash(f"{g.user.first_name} has successfully create a blog post!", "success")
+        flash(f"{g.user.first_name} has created a blog post!", "success")
         return redirect('/blog')
 
     return render_template('league/blog/new.html', form=form)
@@ -300,7 +297,7 @@ def destroy_post(post_id):
     post = Post.query.get(post_id)
 
     if post.user_id != g.user.id:
-        flash("You may only delete your own posts!", "danger")
+        flash("You may only delete posts that you created!", "danger")
         return redirect('/blog')
 
     db.session.delete(post)

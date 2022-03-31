@@ -1,8 +1,6 @@
 """User model tests."""
 
-# run these tests like:
-#
-#    python -m unittest test_user_model.py
+# run these tests command line: python -m unittest test_user_model.py #
 
 from multiprocessing.sharedctypes import Value
 import os
@@ -39,7 +37,7 @@ class UserModelTestCase(TestCase):
         db.drop_all()
         db.create_all()
 
-        # Must fill the managers table because users table has not nullable foreign key pointing to Manager.sleeper_id
+        # Easy way to fill the managers table because users table has not nullable foreign key pointing to Manager.sleeper_id
         update_managers()
 
         # Must use valid sleeper_id for testing

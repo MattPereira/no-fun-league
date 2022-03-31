@@ -29,7 +29,7 @@ db.create_all()
 app.config['WTF_CSRF_ENABLED'] = False
 
 
-class UserViewTestCase(TestCase):
+class UserViewsTestCase(TestCase):
     """Test views for users"""
 
     def setUp(self):

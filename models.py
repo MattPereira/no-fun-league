@@ -38,6 +38,8 @@ class User(db.Model):
     fav_player = db.Column(db.String, default='4039')
     trade_desire = db.Column(db.String, default='7')
 
+    posts = db.relationship('Post')
+
     manager = db.relationship(
         'Manager', backref=backref("user", uselist=False))
 
@@ -142,7 +144,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(100), nullable=False)
     para_1 = db.Column(db.String(750), nullable=False)
     para_2 = db.Column(db.String(750))
     para_3 = db.Column(db.String(750))
@@ -152,7 +154,7 @@ class Post(db.Model):
     posted_by = db.relationship('User')
 
     def __repr__(self):
-        return f"<Post title:{self.title} content:{self.content} created_at:{self.created_at}>"
+        return f"<Post title:{self.title} created_at:{self.created_at}>"
 
     @property
     def friendly_datetime(self):
