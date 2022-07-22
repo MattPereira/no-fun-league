@@ -1,7 +1,7 @@
 # **The No Fun League**
 
 
-<img src="static/no_fun_league.png" width="200" height="200"/>
+[<img src="static/no_fun_league.png" width="200" height="200"/>](https://no-fun-league.herokuapp.com/)
 
 ---
 ### **Description**
