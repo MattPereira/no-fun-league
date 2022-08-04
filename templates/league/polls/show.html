@@ -13,15 +13,14 @@
         </div>
     </div>
 
-    <p class="lead text-white text-center p-5">No Fun League managers who are registered and logged in may submit their proposals to ammend the No Fun League constitution here. Once a proposal is submitted, it cannot be altered in any way. Each manager is allowed to vote only once per proposal. A rule change will occur only when more than half the league managers have agreed.</p>
+    <p class="lead text-white text-center mb-5 p-md-5">No Fun League managers who are registered and logged in may submit their proposals to ammend the No Fun League constitution here. Once a proposal is submitted, it cannot be altered in any way. Each manager is allowed to vote only once per proposal. A rule change will occur only when more than half the league managers have agreed.</p>
 
     <div class="row justify-content-center text-center">
-        <div class="col-10">
-
+        <div class="col-md-10">
             {% for proposal in proposals %}
-            <div class="p-5 mb-5 rounded text-white border border-white proposals">
+            <div class="py-5 px-2 p-md-5 mb-5 rounded text-white border border-white proposals">
                 <div class="row justify-content-center mb-3">
-                    <h3 >{{proposal.ammendment}}</h3>
+                    <h3>{{proposal.ammendment}}</h3>
                     <p class="mb-0">proposed by <a href="/managers/{{proposal.user.id}}"><i>{{proposal.user.full_name}}</i></a></p> 
                     <div class="col-6">
                         <hr class="bg-white border-5 border-white">
