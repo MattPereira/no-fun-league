@@ -1,7 +1,7 @@
 # **The No Fun League**
 
 
-[<img src="static/no_fun_league.png" width="200" height="200"/>](https://no-fun-league.herokuapp.com/)
+<img src="/static/no_fun_league.png" width="200" height="200"/>
 
 ---
 ### **Description**
@@ -18,7 +18,7 @@ The [No Fun League](https://no-fun-league.herokuapp.com/) is a full stack web ap
 
 
 ---
-### **Standard User Flow**
+### **User Flow**
 1. Users create an account by registering
    * On registration page, users select which sleeper account they own from a select input. Once a sleeper account has been chosen, it is removed from the select options since that sleeper account is now taken by a particular user.
    * Users also provide their name, email, and a password which is encrypted and stored in database to allow for future logins using email and password
