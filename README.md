@@ -1,7 +1,7 @@
 # **The No Fun League**
 
 
-<img src="/static/no_fun_league.png" width="200" height="200"/>
+<img src="https://raw.githubusercontent.com/MattPereira/no_fun_league/main/static/no_fun_league.png" width="200" height="200"/>
 
 ---
 ### **Description**
