@@ -18,6 +18,8 @@ app = Flask(__name__)
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 #     'DATABASE_URL', "postgres:///no_fun_league").replace("://", "ql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    'DATABASE_URL', "postgresql:///no_fun_league")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get(
