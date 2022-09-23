@@ -5,7 +5,7 @@
 
 ---
 ### **Description**
-The [No Fun League](https://no-fun-league.herokuapp.com/) is a full stack web application I built for a fantasy football league I have been a member of for 10+ years. All of the roster, draft, and player data is sourced from the [Sleeper API](https://docs.sleeper.app/). The site serves the members of the league by providing them with updated information about their rosters and past league drafts. Additionally, the site allows league members to edit their manager profile information, create blog posts, propose rule changes, and vote on those proposed rule changes.
+The [No Fun League](https://no-fun-league.up.railway.app/) is a full stack web application I built for a fantasy football league I have been a member of for 10+ years. All of the roster, draft, and player data is sourced from the [Sleeper API](https://docs.sleeper.app/). The site serves the members of the league by providing them with updated information about their rosters and past league drafts. Additionally, the site allows league members to edit their manager profile information, create blog posts, propose rule changes, and vote on those proposed rule changes.
 
 
 ---
