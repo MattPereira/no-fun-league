@@ -16,8 +16,8 @@ app = Flask(__name__)
 
 # The .replace fixes the error caused by heroku because heroku not up to date with latest sqlalchemy version
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'DATABASE_URL', "postgres:///no_fun_league").replace("://", "ql://", 1)
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+#     'DATABASE_URL', "postgres:///no_fun_league").replace("://", "ql://", 1)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get(
