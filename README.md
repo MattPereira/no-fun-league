@@ -30,6 +30,14 @@ The [No Fun League](https://no-fun-league.up.railway.app/) is a full stack web a
   * Rule changes may not be edited or deleted to prevent tampering since other users may have already voted.
 
 
+
+---
+### **Database Schema**
+![image](https://user-images.githubusercontent.com/73561520/220412785-4cc79433-c35d-4c73-ad69-15b5182125bf.png)
+
+
+
+
 ---
 ### **Technology Stack**
 - Python
